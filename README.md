@@ -23,7 +23,7 @@ or (if you feel more edgy today)
 
 ## Usage Example
 
-`At the root of your app (preferably but not imperatively), you wanna had <QuickPicker />`
+`At the root of your app (preferably but not imperatively), you wanna have <QuickPicker />`
 
 ```js
 import React, { Component } from 'react';
