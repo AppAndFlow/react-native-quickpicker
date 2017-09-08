@@ -4,6 +4,8 @@
 
 A Quick and Dirty Picker for react-native that should work right Out of the box.
 
+![Alt Text](https://github.com/Valiums/react-native-quickpicker/blob/master/assets/exemple.gif)
+
 ## Why use this library?
 
 Cause you don't want to waste your precious time on implementing (once again) a picker using the 
