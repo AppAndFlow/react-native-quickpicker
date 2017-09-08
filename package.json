@@ -1,0 +1,29 @@
+{
+  "name": "quick-picker",
+  "version": "0.0.1",
+  "description": "A plug and Play picker for React Native",
+  "author": "Vincent de Lafontaine",
+  "private": false,
+  "main": "./src/QuickPicker.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AppAndFlow/react-native-touchable.git"
+  },
+  "keywords": [
+    "react-native",
+    "appandflow",
+    "react-native Picker",
+    "quick picker"
+  ],  
+  "license": "MIT",
+  "files": [
+    "/src",
+    "index.js"
+  ],
+  "dependencies": {
+    "@appandflow/touchable": "^1.2.1",
+    "expo": "^20.0.0",
+    "react": "16.0.0-alpha.12",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-20.0.0.tar.gz"
+  }
+}
