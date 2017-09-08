@@ -89,9 +89,9 @@ export default class AnotherRandomComponent extends React.Component {
 will open the picker.
 
 ```js
-    paramObject: {
+    paramObject = {
         items: ?Array<string>,
-        selectesdValue: ?string,
+        selectedValue: ?string,
         onValueChange: ?Function,
         backgroundColor: ?string,
         topRow: ?Component, // e.g <View> <Text> this will be displayed in the top section of the pick </Text>  </View>
