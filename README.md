@@ -94,11 +94,12 @@ will open the picker.
         selectedValue: ?string,
         onValueChange: ?Function,
         backgroundColor: ?string,
-        topRow: ?Component, // e.g <View> <Text> this will be displayed in the top section of the pick </Text>  </View>
-        onPressDone: ?Function, // When user press done button if you haven't redifined the topRow and kept the default one.
-        onTapOut: ?Function, // will be trigger when user tap off the picker
+        topRow: ?Component, // e.g <View> <Text> this will be displayed in the top section of the picker </Text>  </View>
+        onPressDone: ?Function, // When user press done button, if you haven't redefined the topRow and kept the default one.
+        onTapOut: ?Function, // will be triggered when user tap off the picker
         textStyle: ?Object, // change item text styling, only on IOS
-        doneButtonTextStyle: ?Object, // change the styling the done button's text if you haven't redifined the topRow and kept the default one.
+        doneButtonTextStyle: ?Object, // change the styling of the done button's 
+        // text, if you haven't redefined the topRow and kept the default one.
     }
 ```
 
