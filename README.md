@@ -51,9 +51,10 @@ class App extends Component {
 
 ```js
 
+import Touchable from '@appandflow/touchable';
 import QuickPicker from 'quick-picker';
 
-export default class App extends React.Component {
+export default class AnotherRandomComponent extends React.Component {
   state = {
     selectedLetter: null
   }
@@ -62,7 +63,7 @@ export default class App extends React.Component {
     const { selectedLetter } = this.state;
     QuickPicker.open({ 
         items: ['a', 'b', 'c'], 
-        selectedValue: 'b',
+        selectedValue: 'b', // this could be this.state.selectedLetter as well.
         onValueChange: (selectedValueFromPicker) => this.setState({ selectedLetter: selectedValueFromPicker }),
     });
   }
