@@ -9,6 +9,8 @@ A Quick and Dirty Picker for react-native that should work right Out of the box.
 Cause you don't want to waste your precious time on implementing (once again) a picker using the 
 react-native picker api for your 1 million $ app. (can't blame ya!)
 
+And of course No need to link if you wanna keep using Expo for instance..
+
 ## Installation
 
 `npm i quick-picker --save`
