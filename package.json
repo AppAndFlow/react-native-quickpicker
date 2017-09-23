@@ -1,6 +1,6 @@
 {
   "name": "quick-picker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A plug and Play picker for React Native",
   "author": "Vincent de Lafontaine",
   "private": false,
@@ -22,9 +22,11 @@
     "index.js"
   ],
   "dependencies": {
-    "@appandflow/touchable": "^1.2.1",
+    "@appandflow/touchable": "^1.2.1"
+  },
+  "devDependencies": {
     "expo": "^20.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-20.0.0.tar.gz"
-  }
+  }  
 }
