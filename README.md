@@ -100,6 +100,7 @@ will open the picker.
         textStyle: ?Object, // change item text styling, only on IOS
         doneButtonTextStyle: ?Object, // change the styling of the done button's 
         // text, if you haven't redefined the topRow and kept the default one.
+        useNativeDriver: boolean, // use Native Driver for animated or not. Default is false.
     }
 ```
 

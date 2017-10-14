@@ -19,6 +19,7 @@ let backgroundColor = DEFAULT_BACKGROUNDCOLOR;
 let topRow = null;
 let textStyle = null;
 let doneButtonTextStyle = null;
+let useNativeDriver = false;
 
 type StateType = {
   isOpen: boolean,
@@ -31,6 +32,7 @@ type StateType = {
   topRow: any,
   textStyle: ?Object,
   doneButtonTextStyle: ?Object,
+  useNativeDriver: boolean,
 };
 
 const pickerStore = {
@@ -44,6 +46,7 @@ const pickerStore = {
     // backgroundColor = DEFAULT_BACKGROUNDCOLOR;
     items = [];
     selectedValue = null;
+    // useNativeDriver = false;
     pickerStore.updateSubscriber();
   },
   openPicker: (
@@ -56,6 +59,7 @@ const pickerStore = {
     newonTapOut: ?Function,
     newtextStyle: ?Object,
     newdoneButtonTextStyle: ?Object,
+    newuseNativeDriver: boolean,
   ) => {
     items = newitems;
     selectedValue = newselectedValue;
@@ -89,6 +93,9 @@ const pickerStore = {
     if (newdoneButtonTextStyle) {
         doneButtonTextStyle = newdoneButtonTextStyle;
     }
+    if (newuseNativeDriver) {
+      useNativeDriver = newuseNativeDriver;
+    }
     isOpen = true;
     pickerStore.updateSubscriber();
   },
@@ -107,7 +114,8 @@ const pickerStore = {
       onPressDone,
       onTapOut,
       textStyle,
-      doneButtonTextStyle
+      doneButtonTextStyle,
+      useNativeDriver,
     };
     subscribers.forEach(sub => sub.action(state));
   },
@@ -131,6 +139,7 @@ type GlobalPickerParams = {
     topRow: any,
     textStyle: ?Object,
     doneButtonTextStyle: ?Object,
+    useNativeDriver?: boolean,
 }
 
 
@@ -146,7 +155,8 @@ export default class GlobalPicker extends React.Component {
     const onPressDone = (params && params.onPressDone);
     const textStyle = (params && params.textStyle);
     const doneButtonTextStyle = (params && params.doneButtonTextStyle);
-    pickerStore.openPicker(items, selectedValue, onValueChange, backgroundColor, topRow, onPressDone, onTapOut, textStyle, doneButtonTextStyle);
+    const useNativeDriver = (params && params.useNativeDriver);
+    pickerStore.openPicker(items, selectedValue, onValueChange, backgroundColor, topRow, onPressDone, onTapOut, textStyle, doneButtonTextStyle, useNativeDriver);
   }
 
   static close = () => {
@@ -165,6 +175,7 @@ export default class GlobalPicker extends React.Component {
     topRow: null,
     textStyle: null,
     doneButtonTextStyle: null,
+    useNativeDriver: null,
   };
   _pickerStoreId = null;
 
@@ -181,6 +192,7 @@ export default class GlobalPicker extends React.Component {
         onPressDone: state.onPressDone,
         textStyle: state.textStyle,
         doneButtonTextStyle: state.doneButtonTextStyle,
+        useNativeDriver: state.useNativeDriver,
       }),
     );
   }
@@ -190,7 +202,7 @@ export default class GlobalPicker extends React.Component {
   }  
 
   render() {
-    const { isOpen, selectedValue, onValueChange, items, backgroundColor, topRow, onPressDone, onTapOut, textStyle, doneButtonTextStyle } = this.state;
+    const { isOpen, selectedValue, onValueChange, items, backgroundColor, topRow, onPressDone, onTapOut, textStyle, doneButtonTextStyle, useNativeDriver } = this.state;
     return (
         <Pick
             isOpen={isOpen}
@@ -203,6 +215,7 @@ export default class GlobalPicker extends React.Component {
             topRow={topRow}
             textStyle={textStyle}
             doneButtonTextStyle={doneButtonTextStyle}
+            useNativeDriver={useNativeDriver || false}
         />
     );
   }
@@ -221,6 +234,7 @@ type PickProps = {
   topRow: any,
   textStyle: ?Object,
   doneButtonTextStyle: ?Object,
+  useNativeDriver: boolean,
 };
 
 class Pick extends React.Component {
@@ -240,6 +254,7 @@ class Pick extends React.Component {
     Animated.timing(this.state.deltaY, {
       toValue: -HEIGHT,
       duration: 250,
+      useNativeDriver: this.props.useNativeDriver,
     }).start();
   };
 
@@ -247,6 +262,7 @@ class Pick extends React.Component {
     Animated.timing(this.state.deltaY, {
       toValue: 0,
       duration: 250,
+      useNativeDriver: this.props.useNativeDriver,
     }).start();
   };
 
@@ -254,6 +270,7 @@ class Pick extends React.Component {
     Animated.timing(this.state.opacity, {
       toValue: 0.4,
       duration: 250,
+      useNativeDriver: this.props.useNativeDriver,
     }).start();
   };
 
@@ -261,6 +278,7 @@ class Pick extends React.Component {
     Animated.timing(this.state.opacity, {
       toValue: 0,
       duration: 250,
+      useNativeDriver: this.props.useNativeDriver,
     }).start();
     this._maskTimeout = setTimeout(() => this.setState({ showMask: false }), 250);
   };
