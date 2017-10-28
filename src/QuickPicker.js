@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { StyleSheet, Animated, View, Text, Picker } from 'react-native';
+import { StyleSheet, Animated, View, Text, Picker, Platform, DatePickerIOS } from 'react-native';
 import Touchable from '@appandflow/touchable';
 
 const DEFAULT_BACKGROUNDCOLOR = '#E2E2E2';
@@ -20,6 +20,11 @@ let topRow = null;
 let textStyle = null;
 let doneButtonTextStyle = null;
 let useNativeDriver = false;
+let pickerType = 'normal';
+let mode = Platform.OS === 'ios' ? 'date' : 'default';
+let date = null;
+let minimumDate = null;
+let maximumDate = null;
 
 type StateType = {
   isOpen: boolean,
@@ -27,12 +32,16 @@ type StateType = {
   onTapOut: ?Function,
   onPressDone: ?Function,
   items: Array<string>,
-  selectedValue: ?string,
+  selectedValue: ?string | ?Date,
   backgroundColor: string,
   topRow: any,
   textStyle: ?Object,
   doneButtonTextStyle: ?Object,
   useNativeDriver: boolean,
+  pickerType: 'normal' | 'date',
+  mode: 'date' | 'time' |'datetime' | 'calendar' | 'spinner' | 'default',
+  minimumDate: ?Date,
+  maximumDate: ?Date, 
 };
 
 const pickerStore = {
@@ -47,11 +56,15 @@ const pickerStore = {
     items = [];
     selectedValue = null;
     // useNativeDriver = false;
+    pickerType = 'normal';
+    mode = Platform.OS === 'ios' ? 'date' : 'default';
+    minimumDate = null;
+    maximumDate = null;
     pickerStore.updateSubscriber();
   },
   openPicker: (
     newitems: ?Array<string>,
-    newselectedValue: ?string,
+    newselectedValue: ?string | ?Date,
     newonValueChange: ?Function,
     newbackgroundColor: ?string,
     newtopRow: any,
@@ -60,6 +73,10 @@ const pickerStore = {
     newtextStyle: ?Object,
     newdoneButtonTextStyle: ?Object,
     newuseNativeDriver: boolean,
+    newpickerType: ?('normal' | 'date'),
+    newmode: ?('date' | 'time' |'datetime' | 'calendar' | 'spinner' | 'default'),
+    newminimumDate: ?Date,
+    newmaximumDate: ?Date,     
   ) => {
     items = newitems;
     selectedValue = newselectedValue;
@@ -96,6 +113,19 @@ const pickerStore = {
     if (newuseNativeDriver) {
       useNativeDriver = newuseNativeDriver;
     }
+    if (newpickerType) {
+      pickerType = newpickerType;
+    }
+    if (newmode) {
+      mode = newmode;
+    }
+    if (newminimumDate) {
+      minimumDate = newminimumDate;
+    }
+    if (newmaximumDate) {
+      maximumDate = newmaximumDate;
+    }
+
     isOpen = true;
     pickerStore.updateSubscriber();
   },
@@ -116,6 +146,10 @@ const pickerStore = {
       textStyle,
       doneButtonTextStyle,
       useNativeDriver,
+      pickerType,
+      mode,
+      minimumDate,
+      maximumDate, 
     };
     subscribers.forEach(sub => sub.action(state));
   },
@@ -140,6 +174,10 @@ type GlobalPickerParams = {
     textStyle: ?Object,
     doneButtonTextStyle: ?Object,
     useNativeDriver?: boolean,
+    pickerType: 'normal' | 'date',
+    mode: 'date' | 'time' |'datetime' | 'calendar' | 'spinner' | 'default',
+    minimumDate: ?Date,
+    maximumDate: ?Date,     
 }
 
 
@@ -156,7 +194,18 @@ export default class GlobalPicker extends React.Component {
     const textStyle = (params && params.textStyle);
     const doneButtonTextStyle = (params && params.doneButtonTextStyle);
     const useNativeDriver = (params && params.useNativeDriver);
-    pickerStore.openPicker(items, selectedValue, onValueChange, backgroundColor, topRow, onPressDone, onTapOut, textStyle, doneButtonTextStyle, useNativeDriver);
+
+    const pickerType = (params && params.pickerType);
+    const mode = (params && params.mode);
+    const minimumDate = (params && params.minimumDate);
+    const maximumDate = (params && params.maximumDate);
+
+    pickerStore.openPicker(items, 
+      selectedValue, onValueChange, backgroundColor, 
+      topRow, onPressDone, onTapOut, textStyle, 
+      doneButtonTextStyle, useNativeDriver,
+      pickerType, mode, minimumDate, maximumDate
+    );
   }
 
   static close = () => {
@@ -176,6 +225,10 @@ export default class GlobalPicker extends React.Component {
     textStyle: null,
     doneButtonTextStyle: null,
     useNativeDriver: null,
+    pickerType: 'normal',
+    mode: Platform.OS === 'ios' ? 'date' : 'default',
+    minimumDate: null,
+    maximumDate: null,     
   };
   _pickerStoreId = null;
 
@@ -193,6 +246,10 @@ export default class GlobalPicker extends React.Component {
         textStyle: state.textStyle,
         doneButtonTextStyle: state.doneButtonTextStyle,
         useNativeDriver: state.useNativeDriver,
+        pickerType: state.pickerType,
+        mode: state.mode,
+        minimumDate: state.minimumDate,
+        maximumDate: state.maximumDate,  
       }),
     );
   }
@@ -202,13 +259,17 @@ export default class GlobalPicker extends React.Component {
   }  
 
   render() {
-    const { isOpen, selectedValue, onValueChange, items, backgroundColor, topRow, onPressDone, onTapOut, textStyle, doneButtonTextStyle, useNativeDriver } = this.state;
+    const { isOpen, selectedValue, onValueChange, items, 
+      backgroundColor, topRow, onPressDone, onTapOut, 
+      textStyle, doneButtonTextStyle, useNativeDriver,
+      pickerType, mode, minimumDate, maximumDate, 
+    } = this.state;
     return (
         <Pick
             isOpen={isOpen}
             onPressDone={onPressDone || GlobalPicker.close}
             onTapOut={onTapOut || GlobalPicker.close}
-            selectedValue={selectedValue || null}
+            selectedValue={selectedValue || (pickerType === 'normal' ? null : new Date())}
             onValueChange={onValueChange || null}
             items={items || []}
             backgroundColor={backgroundColor}
@@ -216,6 +277,10 @@ export default class GlobalPicker extends React.Component {
             textStyle={textStyle}
             doneButtonTextStyle={doneButtonTextStyle}
             useNativeDriver={useNativeDriver || false}
+            pickerType={pickerType || 'normal'}
+            mode={mode}
+            minimumDate={minimumDate || null}
+            maximumDate={maximumDate || null}
         />
     );
   }
@@ -235,6 +300,10 @@ type PickProps = {
   textStyle: ?Object,
   doneButtonTextStyle: ?Object,
   useNativeDriver: boolean,
+  pickerType: string,
+  mode: string,
+  minimumDate: ?Date,
+  maximumDate: ?Date,
 };
 
 class Pick extends React.Component {
@@ -298,7 +367,8 @@ class Pick extends React.Component {
   }
 
   render() {
-    const { backgroundColor, topRow, onTapOut, onPressDone, textStyle, doneButtonTextStyle } = this.props;
+    const { backgroundColor, topRow, onTapOut, onPressDone, textStyle, doneButtonTextStyle, pickerType, mode,
+      minimumDate, maximumDate } = this.props;
     if (!this.state.showMask) {
       return null;
     }
@@ -342,15 +412,26 @@ class Pick extends React.Component {
           }
           </View>
           <View style={[styles.bottomContainer, { backgroundColor }]}>
-            <Picker
-              selectedValue={this.props.selectedValue}
-              onValueChange={itemValue => this.props.onValueChange(itemValue)}
-              itemStyle={textStyle}
-            >
-              {this.props.items.map(item =>
-                <Picker.Item key={item} label={item} value={item} />,
-              )}
-            </Picker>
+            {
+              pickerType === 'normal' ? 
+                <Picker
+                selectedValue={this.props.selectedValue}
+                onValueChange={itemValue => this.props.onValueChange(itemValue)}
+                itemStyle={textStyle}
+              >
+                {this.props.items.map(item =>
+                  <Picker.Item key={item} label={item} value={item} />,
+                )}
+              </Picker> : (Platform.OS === 'ios' && 
+               <DatePickerIOS 
+                  date={selectedValue}
+                  mode={mode}
+                  minimumDate={minimumDate}
+                  maximumDate={maximumDate}
+                  onDateChange={date => this.props.onValueChange(date)}
+               />
+              )
+            }
           </View>
         </Animated.View>
       </View>

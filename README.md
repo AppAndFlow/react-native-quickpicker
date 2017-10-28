@@ -91,7 +91,7 @@ will open the picker.
 ```js
     paramObject = {
         items: ?Array<string>,
-        selectedValue: ?string,
+        selectedValue: ?string | ?Date, // if pickerType is set to 'date', give a Date
         onValueChange: ?Function,
         backgroundColor: ?string,
         topRow: ?Component, // e.g <View> <Text> this will be displayed in the top section of the picker </Text>  </View>
@@ -101,6 +101,13 @@ will open the picker.
         doneButtonTextStyle: ?Object, // change the styling of the done button's 
         // text, if you haven't redefined the topRow and kept the default one.
         useNativeDriver: boolean, // use Native Driver for animated or not. Default is false.
+
+        // the following props can only be set if pickerType value is 'date'.
+        // it use the same API as DatePickerIOS or DatePickerAndroid depending on the os.
+        pickerType: ?enum('normal', 'date'), // default value is 'normal'
+        mode: ?enum('date', 'time', 'datetime', 'calendar', 'spinner', 'default'),
+        minimumDate: ?Date,
+        maximumDate: ?Date,   
     }
 ```
 

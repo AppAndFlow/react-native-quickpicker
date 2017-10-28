@@ -1,6 +1,6 @@
 {
   "name": "quick-picker",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A plug and Play picker for React Native",
   "author": "Vincent de Lafontaine",
   "private": false,
