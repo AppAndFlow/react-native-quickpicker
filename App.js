@@ -12,15 +12,15 @@ export default class App extends React.Component {
 
   _onPressText = () => {
     const { selectedLetter } = this.state;
-    QuickPicker.open({ 
-        items: ['a', 'b', 'c'], 
-        selectedValue: new Date(),
+    QuickPicker.open({
+        items: ['a', 'b', 'c','d', 'e', 'f','g', 'h1', 'i2','a3', 'b5', 'c6','d7', 'e8', 'f9','g1', 'h1', '1i'],
+        selectedValue: 'a',
         onValueChange: (selectedValueFromPicker) => this.setState({ selectedLetter: selectedValueFromPicker }),
         // textStyle: { color: 'blue', fontSize: 14 },
         // backgroundColor: 'red',
         useNativeDriver: true,
         // doneButtonTextStyle: { color: 'orange' },
-        pickerType: 'date',
+        pickerType: 'multi',
     });
   }
 
