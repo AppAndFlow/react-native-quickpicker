@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { StyleSheet, Animated, View, Text, Picker, Platform, DatePickerIOS, FlatList } from 'react-native';
+import { StyleSheet, Animated, View, Text, Picker, Platform, DatePickerIOS, FlatList, Dimensions } from 'react-native';
 import Touchable from '@appandflow/touchable';
 
 const DEFAULT_BACKGROUNDCOLOR = '#E2E2E2';
@@ -269,7 +269,7 @@ export default class GlobalPicker extends React.Component {
             isOpen={isOpen}
             onPressDone={onPressDone || GlobalPicker.close}
             onTapOut={onTapOut || GlobalPicker.close}
-            selectedValue={selectedValue || (pickerType === 'normal' ? null : new Date())}
+            selectedValue={selectedValue || ((pickerType === 'normal' || pickerType === 'multi') ? null : new Date())}
             onValueChange={onValueChange || null}
             items={items || []}
             backgroundColor={backgroundColor}
@@ -311,9 +311,20 @@ class Pick extends React.Component {
     deltaY: new Animated.Value(0),
     opacity: new Animated.Value(0),
     showMask: false,
+    selectedValues: [],
   };
   props: PickProps;
   _maskTimeout = null;
+
+  _checkPickerType = () => {
+    if (this.props.pickerType === 'multi') {
+      const selectedValues = Array.isArray(this.props.selectedValue) ? this.props.selectedValue : [this.props.selectedValue]
+
+      console.warn('hehe', selectedValues)
+
+      this.setState({ selectedValues })
+    }
+  }
 
   componentWillUnmount() {
       clearTimeout(this._maskTimeout);
@@ -356,6 +367,7 @@ class Pick extends React.Component {
     if (this.props.isOpen !== newProps.isOpen) {
       if (newProps.isOpen) {
         this.setState({ showMask: true }, () => {
+          this._checkPickerType()
           this._Open();
           this._fadeIn();
         });
@@ -369,11 +381,37 @@ class Pick extends React.Component {
   _keyExtractor = (item) => item;
 
 
-  _renderItem = ({item}) => (
-    <Touchable feedback="none">
-      <Text>{item}</Text>
-    </Touchable>
-  );
+  _renderItem = ({item}) => {
+    const { selectedValues } = this.state;
+
+    const isSelected = selectedValues.find(a => a === item);
+
+    return(
+      <Touchable feedback="none" style={styles.flatlistButton} onPress={() => this._multiPickerOnValueChange(item)}>
+        <Text style={[styles.flatlistButtonText, {width: 40, marginLeft: -40} , isSelected && { color: '#0076FF' }]}>
+          {isSelected && "✓ "}
+        </Text>
+        <Text style={[styles.flatlistButtonText, isSelected && { color: '#0076FF' }]}>
+          {item}
+        </Text>
+      </Touchable>
+    );
+  }
+
+  _multiPickerOnValueChange = (selectedValueFromPicker) => {
+    const itemIndex = this.state.selectedValues.findIndex(a => a === selectedValueFromPicker);
+    const newselectedValues = this.state.selectedValues.slice();
+    if (itemIndex !== -1) {
+      newselectedValues.splice(itemIndex, 1);
+      this.setState({ selectedValues: newselectedValues });
+    } else {
+      newselectedValues.push(selectedValueFromPicker);
+      this.setState({ selectedValues: newselectedValues });
+    }
+
+    this.props.onValueChange(newselectedValues)
+
+  }
 
   _renderPickerBasedOnType = () => {
     const { backgroundColor, topRow, onTapOut, onPressDone, textStyle,
@@ -389,6 +427,7 @@ class Pick extends React.Component {
             extraData={this.props}
             keyExtractor={this._keyExtractor}
             renderItem={this._renderItem}
+            showsVerticalScrollIndicator={false}
           />
         </View>
       )
@@ -519,11 +558,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#E2E2E2',
     height: HEIGHT - BORDERHEIGHT,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingVertical: 25,
   },
   doneButton: {
     fontWeight: '600',
     fontSize: 20,
     color: '#0076FF',
   },
+  flatlistButton: {
+    height: 40,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    width: Dimensions.get('window').width,
+  },
+  flatlistButtonText: {
+    fontSize: 22,
+    color: 'gray',
+  }
 });
