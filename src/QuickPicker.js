@@ -320,8 +320,6 @@ class Pick extends React.Component {
     if (this.props.pickerType === 'multi') {
       const selectedValues = Array.isArray(this.props.selectedValue) ? this.props.selectedValue : [this.props.selectedValue]
 
-      console.warn('hehe', selectedValues)
-
       this.setState({ selectedValues })
     }
   }
