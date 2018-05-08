@@ -7,28 +7,37 @@ import QuickPicker from './src/QuickPicker';
 
 export default class App extends React.Component {
   state = {
-    selectedLetter: new Date()
-  }
+    selectedLetter: new Date(),
+  };
 
   _onPressText = () => {
     const { selectedLetter } = this.state;
     QuickPicker.open({
-        items: ['a', 'b', 'c'],
-        selectedValue: new Date(),
-        onValueChange: (selectedValueFromPicker) => this.setState({ selectedLetter: selectedValueFromPicker }),
-        // textStyle: { color: 'blue', fontSize: 14 },
-        // backgroundColor: 'red',
-        useNativeDriver: true,
-        // doneButtonTextStyle: { color: 'orange' },
-        pickerType: 'date',
+      items: ['a', 'b', 'c'],
+      selectedValue: new Date(),
+      onValueChange: selectedValueFromPicker =>
+        this.setState({ selectedLetter: selectedValueFromPicker }),
+      // textStyle: { color: 'blue', fontSize: 14 },
+      // backgroundColor: 'red',
+      useNativeDriver: true,
+      // doneButtonTextStyle: { color: 'orange' },
+      pickerType: 'date',
+      mode: 'time',
     });
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <Touchable feedback="opacity" native={false} onPress={this._onPressText}>
-          <Text>Open up picker, selected letter: {this.state.selectedLetter.getTime()}</Text>
+        <Touchable
+          feedback="opacity"
+          native={false}
+          onPress={this._onPressText}
+        >
+          <Text>
+            Open up picker, selected letter:{' '}
+            {this.state.selectedLetter.getTime()}
+          </Text>
         </Touchable>
         <QuickPicker />
       </View>
@@ -44,6 +53,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
 
 Expo.registerRootComponent(App);
