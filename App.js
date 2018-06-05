@@ -22,7 +22,7 @@ export default class App extends React.Component {
       useNativeDriver: true,
       // doneButtonTextStyle: { color: 'orange' },
       pickerType: 'date',
-      mode: 'time',
+      mode: 'datetime',
     });
   };
 
@@ -36,7 +36,8 @@ export default class App extends React.Component {
         >
           <Text>
             Open up picker, selected letter:{' '}
-            {this.state.selectedLetter.getTime()}
+            {this.state.selectedLetter.toLocaleDateString()}:
+            {this.state.selectedLetter.toLocaleTimeString()}
           </Text>
         </Touchable>
         <QuickPicker />

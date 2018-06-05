@@ -418,7 +418,9 @@ class Pick extends React.Component {
         this.setState({ showMask: true }, () => {
           if (
             Platform.OS !== 'ios' &&
-            (this.props.mode === 'date' || this.props.mode === 'time')
+            (this.props.mode === 'date' ||
+              this.props.mode === 'time' ||
+              this.props.mode === 'datetime')
           ) {
             this._handleAndroidDateOrTime();
           } else {
@@ -476,6 +478,31 @@ class Pick extends React.Component {
             minute,
           );
           this.props.onValueChange(dateRes);
+        }
+      } catch ({ code, message }) {
+        console.warn('Cannot open date picker', message);
+      }
+    } else if (mode === 'datetime') {
+      try {
+        const { action, year, month, day } = await DatePickerAndroid.open({
+          date: maximumDate || new Date(),
+        });
+        if (action !== DatePickerAndroid.dismissedAction) {
+          const dateRes = new Date(year, month, day);
+
+          const { action, hour, minute } = await TimePickerAndroid.open({
+            date: maximumDate || new Date(),
+          });
+          if (action !== TimePickerAndroid.dismissedAction) {
+            const dateResFinal = new Date(
+              dateRes.getFullYear(),
+              dateRes.getMonth(),
+              dateRes.getDate(),
+              hour,
+              minute,
+            );
+            this.props.onValueChange(dateResFinal);
+          }
         }
       } catch ({ code, message }) {
         console.warn('Cannot open date picker', message);
