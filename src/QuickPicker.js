@@ -356,6 +356,8 @@ class Pick extends React.Component {
     opacity: new Animated.Value(0),
     showMask: false,
     selectedValues: [],
+    androidDate: new Date(),
+    androidTime: new Date(),
   };
   props: PickProps;
   _maskTimeout = null;
@@ -414,9 +416,16 @@ class Pick extends React.Component {
     if (this.props.isOpen !== newProps.isOpen) {
       if (newProps.isOpen) {
         this.setState({ showMask: true }, () => {
-          this._checkPickerType();
-          this._Open();
-          this._fadeIn();
+          if (
+            Platform.OS !== 'ios' &&
+            (this.props.mode === 'date' || this.props.mode === 'time')
+          ) {
+            this._handleAndroidDateOrTime();
+          } else {
+            this._checkPickerType();
+            this._Open();
+            this._fadeIn();
+          }
         });
       } else {
         this._fadeOut();
@@ -424,6 +433,55 @@ class Pick extends React.Component {
       }
     }
   }
+
+  _handleAndroidDateOrTime = async () => {
+    const {
+      backgroundColor,
+      topRow,
+      onTapOut,
+      onPressDone,
+      textStyle,
+      doneButtonTextStyle,
+      pickerType,
+      mode,
+      selectedValue,
+      minimumDate,
+      maximumDate,
+    } = this.props;
+
+    if (mode === 'date') {
+      try {
+        const { action, year, month, day } = await DatePickerAndroid.open({
+          date: maximumDate || new Date(),
+        });
+        if (action !== DatePickerAndroid.dismissedAction) {
+          const dateRes = new Date(year, month, day);
+          this.props.onValueChange(dateRes);
+        }
+      } catch ({ code, message }) {
+        console.warn('Cannot open date picker', message);
+      }
+    } else if (mode === 'time') {
+      try {
+        const { action, hour, minute } = await TimePickerAndroid.open({
+          date: maximumDate || new Date(),
+        });
+        if (action !== TimePickerAndroid.dismissedAction) {
+          const actualDate = new Date();
+          const dateRes = new Date(
+            actualDate.getFullYear(),
+            actualDate.getMonth(),
+            actualDate.getDate(),
+            hour,
+            minute,
+          );
+          this.props.onValueChange(dateRes);
+        }
+      } catch ({ code, message }) {
+        console.warn('Cannot open date picker', message);
+      }
+    }
+  };
 
   _keyExtractor = item => item;
 
@@ -531,6 +589,20 @@ class Pick extends React.Component {
     );
   };
 
+  _androidCalculateNewDateTime = () => {
+    const { androidDate, androidTime } = this.state;
+
+    const dateRes = new Date(
+      androidDate.getFullYear(),
+      androidDate.getMonth(),
+      androidDate.getDate(),
+      androidTime.getHours(),
+      androidTime.getMinutes(),
+    );
+
+    this.props.onValueChange(dateRes);
+  };
+
   _renderAndroidTimePickerBasedOnMode = () => {
     const {
       backgroundColor,
@@ -546,70 +618,85 @@ class Pick extends React.Component {
       maximumDate,
     } = this.props;
 
-    if (mode === 'date') {
+    if (mode === 'datetime') {
       return (
-        <Touchable
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-          hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
-          feedback="opacity"
-          onPress={async () => {
-            try {
-              const { action, year, month, day } = await DatePickerAndroid.open(
-                {
+        <View style={{ flex: 1 }}>
+          <Touchable
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderBottomWidth: 1,
+              borderColor: 'lightgray',
+            }}
+            hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
+            feedback="opacity"
+            onPress={async () => {
+              try {
+                const {
+                  action,
+                  year,
+                  month,
+                  day,
+                } = await DatePickerAndroid.open({
                   date: maximumDate || new Date(),
-                },
-              );
-              if (action !== DatePickerAndroid.dismissedAction) {
-                const dateRes = new Date(year, month, day);
-                this.props.onValueChange(dateRes);
+                });
+                if (action !== DatePickerAndroid.dismissedAction) {
+                  const dateRes = new Date(year, month, day);
+                  this.setState(
+                    { androidDate: dateRes },
+                    this._androidCalculateNewDateTime,
+                  );
+                }
+              } catch ({ code, message }) {
+                console.warn('Cannot open date picker', message);
               }
-            } catch ({ code, message }) {
-              console.warn('Cannot open date picker', message);
-            }
-          }}
-        >
-          <Text style={styles.doneButton}>Select Date</Text>
-          {selectedValue ? (
-            <Text style={[styles.doneButton, { marginTop: 5 }]}>
-              {selectedValue.toLocaleDateString('en-US')}
-            </Text>
-          ) : null}
-        </Touchable>
-      );
-    } else if (mode === 'time') {
-      return (
-        <Touchable
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-          hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
-          feedback="opacity"
-          onPress={async () => {
-            try {
-              const { action, hour, minute } = await TimePickerAndroid.open({
-                date: maximumDate || new Date(),
-              });
-              if (action !== TimePickerAndroid.dismissedAction) {
-                const actualDate = new Date();
-                const dateRes = new Date(
-                  actualDate.getFullYear(),
-                  actualDate.getMonth(),
-                  actualDate.getDate(),
-                  hour,
-                  minute,
-                );
-                this.props.onValueChange(dateRes);
+            }}
+          >
+            <Text style={styles.doneButton}>Select Date</Text>
+            {selectedValue ? (
+              <Text style={[styles.doneButton, { marginTop: 5 }]}>
+                {selectedValue.toLocaleDateString('en-US')}
+              </Text>
+            ) : null}
+          </Touchable>
+
+          <Touchable
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
+            feedback="opacity"
+            onPress={async () => {
+              try {
+                const { action, hour, minute } = await TimePickerAndroid.open({
+                  date: maximumDate || new Date(),
+                });
+                if (action !== TimePickerAndroid.dismissedAction) {
+                  const actualDate = new Date();
+                  const dateRes = new Date(
+                    actualDate.getFullYear(),
+                    actualDate.getMonth(),
+                    actualDate.getDate(),
+                    hour,
+                    minute,
+                  );
+                  this.setState(
+                    { androidTime: dateRes },
+                    this._androidCalculateNewDateTime,
+                  );
+                }
+              } catch ({ code, message }) {
+                console.warn('Cannot open date picker', message);
               }
-            } catch ({ code, message }) {
-              console.warn('Cannot open date picker', message);
-            }
-          }}
-        >
-          <Text style={styles.doneButton}>Select Time</Text>
-          {selectedValue ? (
-            <Text style={[styles.doneButton, { marginTop: 5 }]}>
-              {selectedValue.toLocaleTimeString('en-US')}
-            </Text>
-          ) : null}
-        </Touchable>
+            }}
+          >
+            <Text style={styles.doneButton}>Select Time</Text>
+            {selectedValue ? (
+              <Text style={[styles.doneButton, { marginTop: 5 }]}>
+                {selectedValue.toLocaleTimeString('en-US')}
+              </Text>
+            ) : null}
+          </Touchable>
+        </View>
       );
     }
     return <View />;
@@ -725,7 +812,7 @@ const styles = StyleSheet.create({
   doneButton: {
     fontWeight: '600',
     fontSize: 20,
-    color: '#0076FF',
+    color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
   },
   flatlistButton: {
     height: 40,
