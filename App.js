@@ -23,6 +23,8 @@ export default class App extends React.Component {
       // doneButtonTextStyle: { color: 'orange' },
       pickerType: 'date',
       mode: 'datetime',
+      minimumDate: new Date(),
+      maximumDate: new Date(),
     });
   };
 

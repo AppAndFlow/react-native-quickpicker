@@ -454,7 +454,9 @@ class Pick extends React.Component {
     if (mode === 'date') {
       try {
         const { action, year, month, day } = await DatePickerAndroid.open({
-          date: maximumDate || new Date(),
+          date: selectedValue || new Date(),
+          minDate: minimumDate || undefined,
+          maxDate: maximumDate || undefined,
         });
         if (action !== DatePickerAndroid.dismissedAction) {
           const dateRes = new Date(year, month, day);
@@ -466,7 +468,12 @@ class Pick extends React.Component {
     } else if (mode === 'time') {
       try {
         const { action, hour, minute } = await TimePickerAndroid.open({
-          date: maximumDate || new Date(),
+          minute: selectedValue
+            ? selectedValue.getMinutes()
+            : new Date().getMinutes(),
+          hour: selectedValue
+            ? selectedValue.getHours()
+            : new Date().getHours(),
         });
         if (action !== TimePickerAndroid.dismissedAction) {
           const actualDate = new Date();
@@ -485,13 +492,20 @@ class Pick extends React.Component {
     } else if (mode === 'datetime') {
       try {
         const { action, year, month, day } = await DatePickerAndroid.open({
-          date: maximumDate || new Date(),
+          date: selectedValue || new Date(),
+          minDate: minimumDate || undefined,
+          maxDate: maximumDate || undefined,
         });
         if (action !== DatePickerAndroid.dismissedAction) {
           const dateRes = new Date(year, month, day);
 
           const { action, hour, minute } = await TimePickerAndroid.open({
-            date: maximumDate || new Date(),
+            minute: selectedValue
+              ? selectedValue.getMinutes()
+              : new Date().getMinutes(),
+            hour: selectedValue
+              ? selectedValue.getHours()
+              : new Date().getHours(),
           });
           if (action !== TimePickerAndroid.dismissedAction) {
             const dateResFinal = new Date(
@@ -666,7 +680,9 @@ class Pick extends React.Component {
                   month,
                   day,
                 } = await DatePickerAndroid.open({
-                  date: maximumDate || new Date(),
+                  date: selectedValue || new Date(),
+                  minDate: minimumDate || undefined,
+                  maxDate: maximumDate || undefined,
                 });
                 if (action !== DatePickerAndroid.dismissedAction) {
                   const dateRes = new Date(year, month, day);
@@ -695,7 +711,12 @@ class Pick extends React.Component {
             onPress={async () => {
               try {
                 const { action, hour, minute } = await TimePickerAndroid.open({
-                  date: maximumDate || new Date(),
+                  minute: selectedValue
+                    ? selectedValue.getMinutes()
+                    : new Date().getMinutes(),
+                  hour: selectedValue
+                    ? selectedValue.getHours()
+                    : new Date().getHours(),
                 });
                 if (action !== TimePickerAndroid.dismissedAction) {
                   const actualDate = new Date();
