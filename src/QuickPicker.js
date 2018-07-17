@@ -526,7 +526,7 @@ class Pick extends React.Component {
 
   _keyExtractor = item => item;
 
-  _renderItem = ({ item }) => {
+  _renderItem = ({ item, index }) => {
     const { selectedValues } = this.state;
 
     const isSelected = selectedValues.find(a => a === item);
@@ -534,15 +534,14 @@ class Pick extends React.Component {
     return (
       <Touchable
         feedback="none"
-        style={styles.flatlistButton}
+        style={[
+          styles.flatlistButton,
+          index + 1 === this.props.items.length ? { borderBottomWidth: 0 } : {},
+        ]}
         onPress={() => this._multiPickerOnValueChange(item)}
       >
         <Text
-          style={[
-            styles.flatlistButtonText,
-            { width: 40, marginLeft: -40 },
-            isSelected && { color: '#0076FF' },
-          ]}
+          style={[styles.flatlistCheck, isSelected && { color: '#0076FF' }]}
         >
           {isSelected && '✓ '}
         </Text>
@@ -863,13 +862,20 @@ const styles = StyleSheet.create({
     color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
   },
   flatlistButton: {
-    height: 40,
-    justifyContent: 'center',
+    minHeight: 48,
+    alignItems: 'center',
     flexDirection: 'row',
     width: Dimensions.get('window').width,
+    borderBottomWidth: 1,
+    borderColor: 'lightgray',
+    paddingLeft: 15,
   },
   flatlistButtonText: {
     fontSize: 22,
     color: 'gray',
+  },
+  flatlistCheck: {
+    fontSize: 22,
+    width: 40,
   },
 });
