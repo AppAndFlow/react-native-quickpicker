@@ -862,7 +862,7 @@ const styles = StyleSheet.create({
     color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
   },
   flatlistButton: {
-    minHeight: 48,
+    minHeight: 58,
     alignItems: 'center',
     flexDirection: 'row',
     width: Dimensions.get('window').width,
@@ -873,6 +873,7 @@ const styles = StyleSheet.create({
   flatlistButtonText: {
     fontSize: 22,
     color: 'gray',
+    maxWidth: Dimensions.get('window').width - 40 - 30,
   },
   flatlistCheck: {
     fontSize: 22,
