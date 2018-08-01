@@ -330,7 +330,7 @@ export default class GlobalPicker extends React.Component {
   }
 }
 
-const HEIGHT = 250;
+const HEIGHT = Platform.OS === 'android' ? 100 : 250;
 
 type PickProps = {
   isOpen: boolean,
@@ -765,6 +765,7 @@ class Pick extends React.Component {
     if (!this.state.showMask) {
       return null;
     }
+
     return (
       <View style={styles.mainContainer}>
         <Touchable
