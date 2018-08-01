@@ -92,12 +92,12 @@ export default class AnotherRandomComponent extends React.Component {
 
 ## API
 
-`Static QuickPicker.open(paramObject)`
+`Static QuickPicker.open(config)`
 
 Opens the picker.
 
 ```js
-    paramObject = {
+    config = {
         items: ?Array<string>,
         selectedValue: ?string | ?Date, // if pickerType is set to 'date', give a Date
         onValueChange: ?Function,
