@@ -2,16 +2,24 @@
 
 [![npm (scoped)](https://img.shields.io/npm/v/quick-picker.svg)](https://www.npmjs.com/package/quick-picker) 
 
-A Quick and Dirty Picker for react-native that should work right Out of the box.
+A picker built in JS for react-native/expo that works right out of the box.
 
+## iOS Appearance
+
+### `pickerType='normal'`
 ![Alt Text](https://github.com/Valiums/react-native-quickpicker/blob/master/assets/exemple.gif)
+### `pickerType='date'`
+![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246317749567498/android5.gif)
 
+## Android Appearance
+
+### `pickerType='normal'`
+![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246292210712576/android4.gif)
+### `pickerType='date'`
+![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246232500469761/android3.gif)
 ## Why use this library?
 
-Cause you don't want to waste your precious time on implementing (once again) a picker using the 
-react-native picker api for your 1 million $ app. (can't blame ya!)
-
-And of course No need to link if you wanna keep using Expo for instance..
+The picker is one of the most common input component in mobile applications, but unfortunately most of the solutions requires linking, meaning it won't be possible to use with Expo without ejecting. This one works perfectly in both Vanilla React Native and Expo.
 
 ## Installation
 
@@ -23,7 +31,7 @@ or (if you feel more edgy today)
 
 ## Usage Example
 
-`At the root of your app (preferably but not imperatively), you wanna have <QuickPicker />`
+`At the root of your app (preferably but not imperatively), you want to have <QuickPicker />`
 
 ```js
 import React, { Component } from 'react';
@@ -47,7 +55,7 @@ class App extends Component {
 }
 ```
 
-`You get the point. Now If you wanna open the Picker (that could be at any place in your app) you must call QuickPicker.open({...})`
+`Now if you want to open the Picker (that could be anywhere in your app's navigation), you must call QuickPicker.open({...})`
 
 ```js
 
@@ -86,7 +94,7 @@ export default class AnotherRandomComponent extends React.Component {
 
 `Static QuickPicker.open(paramObject)`
 
-will open the picker.
+Opens the picker.
 
 ```js
     paramObject = {
@@ -113,4 +121,4 @@ will open the picker.
 
 `Static QuickPicker.close()`
 
-will close the picker.
+Closes the picker.
