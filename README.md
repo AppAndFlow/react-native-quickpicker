@@ -6,20 +6,20 @@ A picker built in JS for react-native/expo that works right out of the box.
 
 ## iOS Appearance
 
-### `pickerType='normal'`
+### `pickerType="normal"`
 ![Alt Text](https://github.com/Valiums/react-native-quickpicker/blob/master/assets/exemple.gif)
-### `pickerType='date'`
+### `pickerType="date"`
 ![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246317749567498/android5.gif)
 
 ## Android Appearance
 
-### `pickerType='normal'`
+### `pickerType="normal"`
 ![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246292210712576/android4.gif)
-### `pickerType='date'`
+### `pickerType="date"`
 ![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246232500469761/android3.gif)
 ## Why use this library?
 
-The picker is one of the most common input component in mobile applications, but unfortunately most of the solutions requires linking, meaning it won't be possible to use with Expo without ejecting. This one works perfectly in both Vanilla React Native and Expo.
+The picker is one of the most common input component in mobile applications, but unfortunately most of the solutions require linking, meaning it won't be possible to use with Expo without ejecting. This one works perfectly in both Vanilla React Native and Expo.
 
 ## Installation
 
