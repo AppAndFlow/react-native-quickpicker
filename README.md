@@ -25,7 +25,7 @@ The picker is one of the most common input component in mobile applications, but
 
 `npm i quick-picker --save`
 
-or (if you feel more edgy today)
+or
 
 `yarn add quick-picker`
 
