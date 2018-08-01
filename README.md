@@ -8,14 +8,14 @@ A picker built in JS for react-native/expo that works right out of the box.
 
 ### `pickerType="normal"`
 ![Alt Text](https://github.com/Valiums/react-native-quickpicker/blob/master/assets/exemple.gif)
-### `pickerType="date"`
+### `pickerType="date" && mode="datetime"`
 ![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246317749567498/android5.gif)
 
 ## Android Appearance
 
 ### `pickerType="normal"`
 ![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246292210712576/android4.gif)
-### `pickerType="date"`
+### `pickerType="date" && mode="datetime"` 
 ![Alt Text](https://cdn.discordapp.com/attachments/172179439663316992/474246232500469761/android3.gif)
 ## Why use this library?
 
@@ -113,7 +113,7 @@ Opens the picker.
         // the following props can only be set if pickerType value is 'date'.
         // it use the same API as DatePickerIOS or DatePickerAndroid depending on the os.
         pickerType: ?enum('normal', 'date'), // default value is 'normal'
-        mode: ?enum('date', 'time', 'datetime', 'calendar', 'spinner', 'default'),
+        mode: ?enum('date', 'time', 'datetime'), // only if pickerType === "date"
         minimumDate: ?Date,
         maximumDate: ?Date,   
     }
