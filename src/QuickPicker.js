@@ -607,7 +607,9 @@ class Pick extends React.Component {
         {pickerType === 'normal' ? (
           <Picker
             selectedValue={this.props.selectedValue}
-            onValueChange={itemValue => this.props.onValueChange(itemValue)}
+            onValueChange={itemValue => {
+              this.props.onValueChange(itemValue);
+            }}
             itemStyle={textStyle}
           >
             {this.props.items.map(item => (
@@ -749,6 +751,8 @@ class Pick extends React.Component {
     return <View />;
   };
 
+  _keyExtractorAndroidNormal = (item, index) => item + String(index);
+
   render() {
     const {
       backgroundColor,
@@ -764,6 +768,75 @@ class Pick extends React.Component {
     } = this.props;
     if (!this.state.showMask) {
       return null;
+    }
+
+    if (Platform.OS === 'android' && pickerType === 'normal') {
+      return (
+        <View style={styles.mainContainer}>
+          <Touchable
+            feedback="none"
+            native={false}
+            style={{ flex: 1 }}
+            onPress={onTapOut}
+          >
+            <Animated.View
+              style={[
+                styles.mask,
+                {
+                  opacity: this.state.opacity,
+                },
+              ]}
+            />
+          </Touchable>
+          <View
+            style={{
+              position: 'absolute',
+              left: '6%',
+              right: '6%',
+              bottom: '6%',
+              top: '6%',
+              flexDirection: 'row',
+            }}
+          >
+            <FlatList
+              style={{
+                alignSelf: 'center',
+                backgroundColor: 'white',
+                borderRadius: 2,
+              }}
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+                paddingVertical: 12,
+              }}
+              keyExtractor={this._keyExtractorAndroidNormal}
+              data={this.props.items}
+              renderItem={({ item }) => (
+                <Touchable
+                  feedback="none"
+                  native={false}
+                  style={{ height: 40, justifyContent: 'center' }}
+                  onPress={() => {
+                    this.props.onValueChange(item);
+                    setTimeout(GlobalPicker.close, 10);
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      color:
+                        this.props.selectedValue === item
+                          ? 'rgb(21,149,135)'
+                          : 'black',
+                    }}
+                  >
+                    {item}
+                  </Text>
+                </Touchable>
+              )}
+            />
+          </View>
+        </View>
+      );
     }
 
     return (
