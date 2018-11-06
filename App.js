@@ -7,24 +7,17 @@ import QuickPicker from './src/QuickPicker';
 
 export default class App extends React.Component {
   state = {
-    selectedLetter: new Date(),
+    selectedLetter: 'a',
   };
 
   _onPressText = () => {
     const { selectedLetter } = this.state;
     QuickPicker.open({
       items: ['a', 'b', 'c'],
-      selectedValue: new Date(),
+      selectedValue: this.state.selectedLetter,
       onValueChange: selectedValueFromPicker =>
         this.setState({ selectedLetter: selectedValueFromPicker }),
-      // textStyle: { color: 'blue', fontSize: 14 },
-      // backgroundColor: 'red',
       useNativeDriver: true,
-      // doneButtonTextStyle: { color: 'orange' },
-      pickerType: 'date',
-      mode: 'datetime',
-      minimumDate: new Date(),
-      maximumDate: new Date(),
     });
   };
 
@@ -37,9 +30,8 @@ export default class App extends React.Component {
           onPress={this._onPressText}
         >
           <Text>
-            Open up picker, selected letter:{' '}
-            {this.state.selectedLetter.toLocaleDateString()}:
-            {this.state.selectedLetter.toLocaleTimeString()}
+            Open up picker, selected letter:
+            {this.state.selectedLetter}
           </Text>
         </Touchable>
         <QuickPicker />

@@ -59,20 +59,42 @@ type StateType = {
 const pickerStore = {
   closePicker: () => {
     isOpen = false;
-    onValueChange = () => null;
-    onTapOut = null;
-    onPressDone = null;
-    // textStyle = null;
-    // doneButtonTextStyle = null;
-    // backgroundColor = DEFAULT_BACKGROUNDCOLOR;
-    items = [];
-    selectedValue = null;
-    // useNativeDriver = false;
-    pickerType = 'normal';
-    mode = Platform.OS === 'ios' ? 'date' : 'default';
-    minimumDate = null;
-    maximumDate = null;
-    pickerStore.updateSubscriber();
+
+    if (Platform.OS === 'ios') {
+      onValueChange = () => null;
+      onTapOut = null;
+      onPressDone = null;
+      // textStyle = null;
+      // doneButtonTextStyle = null;
+      // backgroundColor = DEFAULT_BACKGROUNDCOLOR;
+      items = [];
+      selectedValue = null;
+      // useNativeDriver = false;
+      pickerType = 'normal';
+      mode = Platform.OS === 'ios' ? 'date' : 'default';
+      minimumDate = null;
+      maximumDate = null;
+      pickerStore.updateSubscriber();
+    } else {
+      setTimeout(() => {
+        onValueChange = () => null;
+        onTapOut = null;
+        onPressDone = null;
+        // textStyle = null;
+        // doneButtonTextStyle = null;
+        // backgroundColor = DEFAULT_BACKGROUNDCOLOR;
+        items = [];
+        selectedValue = null;
+        // useNativeDriver = false;
+        pickerType = 'normal';
+        mode = Platform.OS === 'ios' ? 'date' : 'default';
+        minimumDate = null;
+        maximumDate = null;
+        pickerStore.updateSubscriber();
+      }, 250);
+
+      pickerStore.updateSubscriber();
+    }
   },
   openPicker: (
     newitems: ?Array<string>,
