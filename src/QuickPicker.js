@@ -352,7 +352,7 @@ export default class GlobalPicker extends React.Component {
   }
 }
 
-const HEIGHT = Platform.OS === 'android' ? 100 : 250;
+const HEIGHT = 250;
 
 type PickProps = {
   isOpen: boolean,
@@ -563,14 +563,21 @@ class Pick extends React.Component {
         onPress={() => this._multiPickerOnValueChange(item)}
       >
         <Text
-          style={[styles.flatlistCheck, isSelected && { color: '#0076FF' }]}
+          style={[
+            styles.flatlistCheck,
+            isSelected && {
+              color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
+            },
+          ]}
         >
           {isSelected && '✓ '}
         </Text>
         <Text
           style={[
             styles.flatlistButtonText,
-            isSelected && { color: '#0076FF' },
+            isSelected && {
+              color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
+            },
           ]}
         >
           {item}
@@ -836,7 +843,7 @@ class Pick extends React.Component {
                 <Touchable
                   feedback="none"
                   native={false}
-                  style={{ height: 40, justifyContent: 'center' }}
+                  style={{ minHeight: 40, justifyContent: 'center' }}
                   onPress={() => {
                     this.props.onValueChange(item);
                     setTimeout(GlobalPicker.close, 10);
@@ -950,7 +957,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E2E2E2',
     height: HEIGHT - BORDERHEIGHT,
     alignItems: 'center',
-    paddingVertical: 25,
+    paddingVertical: 10,
   },
   doneButton: {
     fontWeight: '600',
