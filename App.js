@@ -15,6 +15,7 @@ export default class App extends React.Component {
     QuickPicker.open({
       items: ['a', 'b', 'c'],
       selectedValue: this.state.selectedLetter,
+      doneButtonText: 'Save',
       onValueChange: selectedValueFromPicker =>
         this.setState({ selectedLetter: selectedValueFromPicker }),
       useNativeDriver: true,

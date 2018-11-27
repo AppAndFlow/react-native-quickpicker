@@ -30,6 +30,7 @@ let selectedValue = null;
 let backgroundColor = DEFAULT_BACKGROUNDCOLOR;
 let topRow = null;
 let textStyle = null;
+let doneButtonText = "Done";
 let doneButtonTextStyle = null;
 let useNativeDriver = false;
 let pickerType = 'normal';
@@ -48,6 +49,7 @@ type StateType = {
   backgroundColor: string,
   topRow: any,
   textStyle: ?Object,
+  doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
   useNativeDriver: boolean,
   pickerType: 'normal' | 'date',
@@ -105,6 +107,7 @@ const pickerStore = {
     newonPressDone: ?Function,
     newonTapOut: ?Function,
     newtextStyle: ?Object,
+    newdoneButtonText: ?string,
     newdoneButtonTextStyle: ?Object,
     newuseNativeDriver: boolean,
     newpickerType: ?('normal' | 'date'),
@@ -148,6 +151,9 @@ const pickerStore = {
     if (newtextStyle) {
       textStyle = newtextStyle;
     }
+		if(newdoneButtonText) {
+			doneButtonText = newdoneButtonText;
+		}
     if (newdoneButtonTextStyle) {
       doneButtonTextStyle = newdoneButtonTextStyle;
     }
@@ -185,6 +191,7 @@ const pickerStore = {
       onPressDone,
       onTapOut,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       useNativeDriver,
       pickerType,
@@ -213,6 +220,7 @@ type GlobalPickerParams = {
   backgroundColor: ?string,
   topRow: any,
   textStyle: ?Object,
+  doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
   useNativeDriver?: boolean,
   pickerType: 'normal' | 'date',
@@ -231,6 +239,7 @@ export default class GlobalPicker extends React.Component {
     const onTapOut = params && params.onTapOut;
     const onPressDone = params && params.onPressDone;
     const textStyle = params && params.textStyle;
+    const doneButtonText = params && params.doneButtonText;
     const doneButtonTextStyle = params && params.doneButtonTextStyle;
     const useNativeDriver = params && params.useNativeDriver;
 
@@ -248,6 +257,7 @@ export default class GlobalPicker extends React.Component {
       onPressDone,
       onTapOut,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       useNativeDriver,
       pickerType,
@@ -272,6 +282,7 @@ export default class GlobalPicker extends React.Component {
     backgroundColor: DEFAULT_BACKGROUNDCOLOR,
     topRow: null,
     textStyle: null,
+    doneButtonText: "Done",
     doneButtonTextStyle: null,
     useNativeDriver: null,
     pickerType: 'normal',
@@ -293,6 +304,7 @@ export default class GlobalPicker extends React.Component {
         onTapOut: state.onTapOut,
         onPressDone: state.onPressDone,
         textStyle: state.textStyle,
+        doneButtonText: state.doneButtonText,
         doneButtonTextStyle: state.doneButtonTextStyle,
         useNativeDriver: state.useNativeDriver,
         pickerType: state.pickerType,
@@ -318,6 +330,7 @@ export default class GlobalPicker extends React.Component {
       onPressDone,
       onTapOut,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       useNativeDriver,
       pickerType,
@@ -341,6 +354,7 @@ export default class GlobalPicker extends React.Component {
         backgroundColor={backgroundColor}
         topRow={topRow}
         textStyle={textStyle}
+        doneButtonText={doneButtonText}
         doneButtonTextStyle={doneButtonTextStyle}
         useNativeDriver={useNativeDriver || false}
         pickerType={pickerType || 'normal'}
@@ -364,6 +378,7 @@ type PickProps = {
   backgroundColor: ?string,
   topRow: any,
   textStyle: ?Object,
+  doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
   useNativeDriver: boolean,
   pickerType: string,
@@ -465,6 +480,7 @@ class Pick extends React.Component {
       onTapOut,
       onPressDone,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       pickerType,
       mode,
@@ -609,6 +625,7 @@ class Pick extends React.Component {
       onTapOut,
       onPressDone,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       pickerType,
       mode,
@@ -681,6 +698,7 @@ class Pick extends React.Component {
       onTapOut,
       onPressDone,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       pickerType,
       mode,
@@ -789,6 +807,7 @@ class Pick extends React.Component {
       onTapOut,
       onPressDone,
       textStyle,
+      doneButtonText,
       doneButtonTextStyle,
       pickerType,
       mode,
@@ -904,7 +923,7 @@ class Pick extends React.Component {
               <View style={styles.borderContainer}>
                 <Touchable feedback="opacity" onPress={onPressDone}>
                   <Text style={[styles.doneButton, doneButtonTextStyle]}>
-                    Done
+                    {doneButtonText}
                   </Text>
                 </Touchable>
               </View>
