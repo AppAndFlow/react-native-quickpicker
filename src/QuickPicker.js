@@ -32,6 +32,8 @@ let topRow = null;
 let textStyle = null;
 let doneButtonText = "Done";
 let doneButtonTextStyle = null;
+let itemStyleAndroid = null;
+let selectedItemStyleAndroid = null;
 let useNativeDriver = false;
 let pickerType = 'normal';
 let mode = Platform.OS === 'ios' ? 'date' : 'default';
@@ -51,11 +53,13 @@ type StateType = {
   textStyle: ?Object,
   doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
+  itemStyleAndroid: ?Object,
+  selectedItemStyleAndroid: ?Object,
   useNativeDriver: boolean,
   pickerType: 'normal' | 'date',
   mode: 'date' | 'time' | 'datetime' | 'calendar' | 'spinner' | 'default',
   minimumDate: ?Date,
-  maximumDate: ?Date,
+  maximumDate: ?Date
 };
 
 const pickerStore = {
@@ -109,6 +113,8 @@ const pickerStore = {
     newtextStyle: ?Object,
     newdoneButtonText: ?string,
     newdoneButtonTextStyle: ?Object,
+    newitemStyleAndroid: ?Object,
+    newselectedItemStyleAndroid: ?Object,
     newuseNativeDriver: boolean,
     newpickerType: ?('normal' | 'date'),
     newmode: ?(
@@ -151,11 +157,17 @@ const pickerStore = {
     if (newtextStyle) {
       textStyle = newtextStyle;
     }
-		if(newdoneButtonText) {
-			doneButtonText = newdoneButtonText;
-		}
+    if(newdoneButtonText) {
+      doneButtonText = newdoneButtonText;
+    }
     if (newdoneButtonTextStyle) {
       doneButtonTextStyle = newdoneButtonTextStyle;
+    }
+    if (newitemStyleAndroid) {
+      itemStyleAndroid = newitemStyleAndroid;
+    }
+    if (newselectedItemStyleAndroid) {
+      selectedItemStyleAndroid = newselectedItemStyleAndroid;
     }
     if (newuseNativeDriver) {
       useNativeDriver = newuseNativeDriver;
@@ -193,6 +205,8 @@ const pickerStore = {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       useNativeDriver,
       pickerType,
       mode,
@@ -222,6 +236,8 @@ type GlobalPickerParams = {
   textStyle: ?Object,
   doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
+  itemStyleAndroid: ?Object,
+  selectedItemStyleAndroid: ?Object,
   useNativeDriver?: boolean,
   pickerType: 'normal' | 'date',
   mode: 'date' | 'time' | 'datetime' | 'calendar' | 'spinner' | 'default',
@@ -241,6 +257,8 @@ export default class GlobalPicker extends React.Component {
     const textStyle = params && params.textStyle;
     const doneButtonText = params && params.doneButtonText;
     const doneButtonTextStyle = params && params.doneButtonTextStyle;
+    const itemStyleAndroid = params && params.itemStyleAndroid;
+    const selectedItemStyleAndroid = params && params.selectedItemStyleAndroid;
     const useNativeDriver = params && params.useNativeDriver;
 
     const pickerType = params && params.pickerType;
@@ -259,6 +277,8 @@ export default class GlobalPicker extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       useNativeDriver,
       pickerType,
       mode,
@@ -284,6 +304,8 @@ export default class GlobalPicker extends React.Component {
     textStyle: null,
     doneButtonText: "Done",
     doneButtonTextStyle: null,
+    itemStyleAndroid: null,
+    selectedItemStyleAndroid: null,
     useNativeDriver: null,
     pickerType: 'normal',
     mode: Platform.OS === 'ios' ? 'date' : 'default',
@@ -306,6 +328,8 @@ export default class GlobalPicker extends React.Component {
         textStyle: state.textStyle,
         doneButtonText: state.doneButtonText,
         doneButtonTextStyle: state.doneButtonTextStyle,
+        itemStyleAndroid: state.itemStyleAndroid,
+        selectedItemStyleAndroid: state.selectedItemStyleAndroid,
         useNativeDriver: state.useNativeDriver,
         pickerType: state.pickerType,
         mode: state.mode,
@@ -332,6 +356,8 @@ export default class GlobalPicker extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       useNativeDriver,
       pickerType,
       mode,
@@ -356,6 +382,8 @@ export default class GlobalPicker extends React.Component {
         textStyle={textStyle}
         doneButtonText={doneButtonText}
         doneButtonTextStyle={doneButtonTextStyle}
+		  itemStyleAndroid={itemStyleAndroid}
+		  selectedItemStyleAndroid={selectedItemStyleAndroid}
         useNativeDriver={useNativeDriver || false}
         pickerType={pickerType || 'normal'}
         mode={mode}
@@ -380,6 +408,8 @@ type PickProps = {
   textStyle: ?Object,
   doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
+  itemStyleAndroid: ?Object,
+  selectedItemStyleAndroid: ?Object,
   useNativeDriver: boolean,
   pickerType: string,
   mode: string,
@@ -482,6 +512,8 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       pickerType,
       mode,
       selectedValue,
@@ -627,6 +659,8 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       pickerType,
       mode,
       minimumDate,
@@ -700,6 +734,8 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       pickerType,
       mode,
       selectedValue,
@@ -809,6 +845,8 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      itemStyleAndroid,
+      selectedItemStyleAndroid,
       pickerType,
       mode,
       minimumDate,
@@ -869,13 +907,15 @@ class Pick extends React.Component {
                   }}
                 >
                   <Text
-                    style={{
+                    style={[{
                       fontSize: 22,
                       color:
                         this.props.selectedValue === item
                           ? 'rgb(21,149,135)'
                           : 'black',
-                    }}
+                    }, itemStyleAndroid,
+                    (this.props.selectedValue === item ? selectedItemStyleAndroid : null)
+					    ]}
                   >
                     {item}
                   </Text>

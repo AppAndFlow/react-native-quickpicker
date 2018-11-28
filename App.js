@@ -19,6 +19,14 @@ export default class App extends React.Component {
       onValueChange: selectedValueFromPicker =>
         this.setState({ selectedLetter: selectedValueFromPicker }),
       useNativeDriver: true,
+      itemStyleAndroid: {
+        color: 'grey',
+        padding: 10
+      },
+      selectedItemStyleAndroid: {
+        color: '#0076ff',
+        fontWeight: '500'
+      }
     });
   };
 
