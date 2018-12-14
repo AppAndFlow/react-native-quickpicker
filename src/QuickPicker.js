@@ -32,6 +32,7 @@ let topRow = null;
 let textStyle = null;
 let doneButtonText = "Done";
 let doneButtonTextStyle = null;
+let androidModalStyle = null;
 let itemStyleAndroid = null;
 let selectedItemStyleAndroid = null;
 let useNativeDriver = false;
@@ -53,6 +54,7 @@ type StateType = {
   textStyle: ?Object,
   doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
+  androidModalStyle: ?Object,
   itemStyleAndroid: ?Object,
   selectedItemStyleAndroid: ?Object,
   useNativeDriver: boolean,
@@ -113,6 +115,7 @@ const pickerStore = {
     newtextStyle: ?Object,
     newdoneButtonText: ?string,
     newdoneButtonTextStyle: ?Object,
+    newandroidModalStyle: ?Object,
     newitemStyleAndroid: ?Object,
     newselectedItemStyleAndroid: ?Object,
     newuseNativeDriver: boolean,
@@ -163,6 +166,9 @@ const pickerStore = {
     if (newdoneButtonTextStyle) {
       doneButtonTextStyle = newdoneButtonTextStyle;
     }
+    if (newandroidModalStyle) {
+      androidModalStyle = newandroidModalStyle;
+    }
     if (newitemStyleAndroid) {
       itemStyleAndroid = newitemStyleAndroid;
     }
@@ -205,6 +211,7 @@ const pickerStore = {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       useNativeDriver,
@@ -236,6 +243,7 @@ type GlobalPickerParams = {
   textStyle: ?Object,
   doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
+  androidModalStyle: ?Object,
   itemStyleAndroid: ?Object,
   selectedItemStyleAndroid: ?Object,
   useNativeDriver?: boolean,
@@ -257,6 +265,7 @@ export default class GlobalPicker extends React.Component {
     const textStyle = params && params.textStyle;
     const doneButtonText = params && params.doneButtonText;
     const doneButtonTextStyle = params && params.doneButtonTextStyle;
+    const androidModalStyle = params && params.androidModalStyle;
     const itemStyleAndroid = params && params.itemStyleAndroid;
     const selectedItemStyleAndroid = params && params.selectedItemStyleAndroid;
     const useNativeDriver = params && params.useNativeDriver;
@@ -277,6 +286,7 @@ export default class GlobalPicker extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       useNativeDriver,
@@ -304,6 +314,7 @@ export default class GlobalPicker extends React.Component {
     textStyle: null,
     doneButtonText: "Done",
     doneButtonTextStyle: null,
+    androidModalStyle: null,
     itemStyleAndroid: null,
     selectedItemStyleAndroid: null,
     useNativeDriver: null,
@@ -328,6 +339,7 @@ export default class GlobalPicker extends React.Component {
         textStyle: state.textStyle,
         doneButtonText: state.doneButtonText,
         doneButtonTextStyle: state.doneButtonTextStyle,
+        androidModalStyle: state.androidModalStyle,
         itemStyleAndroid: state.itemStyleAndroid,
         selectedItemStyleAndroid: state.selectedItemStyleAndroid,
         useNativeDriver: state.useNativeDriver,
@@ -356,6 +368,7 @@ export default class GlobalPicker extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       useNativeDriver,
@@ -382,8 +395,9 @@ export default class GlobalPicker extends React.Component {
         textStyle={textStyle}
         doneButtonText={doneButtonText}
         doneButtonTextStyle={doneButtonTextStyle}
-		  itemStyleAndroid={itemStyleAndroid}
-		  selectedItemStyleAndroid={selectedItemStyleAndroid}
+        androidModalStyle={androidModalStyle}
+        itemStyleAndroid={itemStyleAndroid}
+        selectedItemStyleAndroid={selectedItemStyleAndroid}
         useNativeDriver={useNativeDriver || false}
         pickerType={pickerType || 'normal'}
         mode={mode}
@@ -408,6 +422,7 @@ type PickProps = {
   textStyle: ?Object,
   doneButtonText: ?string,
   doneButtonTextStyle: ?Object,
+  androidModalStyle: ?Object,
   itemStyleAndroid: ?Object,
   selectedItemStyleAndroid: ?Object,
   useNativeDriver: boolean,
@@ -512,6 +527,7 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       pickerType,
@@ -659,6 +675,7 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       pickerType,
@@ -734,6 +751,7 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       pickerType,
@@ -845,6 +863,7 @@ class Pick extends React.Component {
       textStyle,
       doneButtonText,
       doneButtonTextStyle,
+      androidModalStyle,
       itemStyleAndroid,
       selectedItemStyleAndroid,
       pickerType,
@@ -885,11 +904,11 @@ class Pick extends React.Component {
             }}
           >
             <FlatList
-              style={{
+              style={[{
                 alignSelf: 'center',
                 backgroundColor: 'white',
                 borderRadius: 2,
-              }}
+              }, androidModalStyle]}
               contentContainerStyle={{
                 paddingHorizontal: 10,
                 paddingVertical: 12,
