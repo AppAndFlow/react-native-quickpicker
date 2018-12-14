@@ -121,6 +121,9 @@ Opens the picker.
         textStyle: ?Object, // change item text styling, only on IOS
         doneButtonText: ?string, // change the "done" button string. Default is "done".
         doneButtonTextStyle: ?Object, // change the styling of the done button's
+        androidModalStyle: ?Object, // change the styling of the default picker's modal on Android
+        itemStyleAndroid: ?Object, // change the styling of the default picker's items on Android. Applied also to selected item.
+        selectedItemStyleAndroid: ?Object, // change the styling of the default picker's selected item on Android.
         // text, if you haven't redefined the topRow and kept the default one.
         useNativeDriver: boolean, // use Native Driver for animated or not. Default is false.
 
