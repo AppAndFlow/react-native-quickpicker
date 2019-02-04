@@ -30,7 +30,7 @@ let selectedValue = null;
 let backgroundColor = DEFAULT_BACKGROUNDCOLOR;
 let topRow = null;
 let textStyle = null;
-let doneButtonText = "Done";
+let doneButtonText = 'Done';
 let doneButtonTextStyle = null;
 let androidModalStyle = null;
 let itemStyleAndroid = null;
@@ -61,7 +61,7 @@ type StateType = {
   pickerType: 'normal' | 'date',
   mode: 'date' | 'time' | 'datetime' | 'calendar' | 'spinner' | 'default',
   minimumDate: ?Date,
-  maximumDate: ?Date
+  maximumDate: ?Date,
 };
 
 const pickerStore = {
@@ -160,7 +160,7 @@ const pickerStore = {
     if (newtextStyle) {
       textStyle = newtextStyle;
     }
-    if(newdoneButtonText) {
+    if (newdoneButtonText) {
       doneButtonText = newdoneButtonText;
     }
     if (newdoneButtonTextStyle) {
@@ -312,7 +312,7 @@ export default class GlobalPicker extends React.Component {
     backgroundColor: DEFAULT_BACKGROUNDCOLOR,
     topRow: null,
     textStyle: null,
-    doneButtonText: "Done",
+    doneButtonText: 'Done',
     doneButtonTextStyle: null,
     androidModalStyle: null,
     itemStyleAndroid: null,
@@ -548,6 +548,9 @@ class Pick extends React.Component {
           const dateRes = new Date(year, month, day);
           this.props.onValueChange(dateRes);
         }
+        if (action === DatePickerAndroid.dismissedAction) {
+          onTapOut();
+        }
       } catch ({ code, message }) {
         console.warn('Cannot open date picker', message);
       }
@@ -571,6 +574,9 @@ class Pick extends React.Component {
             minute,
           );
           this.props.onValueChange(dateRes);
+        }
+        if (action === DatePickerAndroid.dismissedAction) {
+          onTapOut();
         }
       } catch ({ code, message }) {
         console.warn('Cannot open date picker', message);
@@ -603,6 +609,9 @@ class Pick extends React.Component {
             );
             this.props.onValueChange(dateResFinal);
           }
+        }
+        if (action === DatePickerAndroid.dismissedAction) {
+          onTapOut();
         }
       } catch ({ code, message }) {
         console.warn('Cannot open date picker', message);
@@ -904,11 +913,14 @@ class Pick extends React.Component {
             }}
           >
             <FlatList
-              style={[{
-                alignSelf: 'center',
-                backgroundColor: 'white',
-                borderRadius: 2,
-              }, androidModalStyle]}
+              style={[
+                {
+                  alignSelf: 'center',
+                  backgroundColor: 'white',
+                  borderRadius: 2,
+                },
+                androidModalStyle,
+              ]}
               contentContainerStyle={{
                 paddingHorizontal: 10,
                 paddingVertical: 12,
@@ -926,15 +938,19 @@ class Pick extends React.Component {
                   }}
                 >
                   <Text
-                    style={[{
-                      fontSize: 22,
-                      color:
-                        this.props.selectedValue === item
-                          ? 'rgb(21,149,135)'
-                          : 'black',
-                    }, itemStyleAndroid,
-                    (this.props.selectedValue === item ? selectedItemStyleAndroid : null)
-					    ]}
+                    style={[
+                      {
+                        fontSize: 22,
+                        color:
+                          this.props.selectedValue === item
+                            ? 'rgb(21,149,135)'
+                            : 'black',
+                      },
+                      itemStyleAndroid,
+                      this.props.selectedValue === item
+                        ? selectedItemStyleAndroid
+                        : null,
+                    ]}
                   >
                     {item}
                   </Text>
