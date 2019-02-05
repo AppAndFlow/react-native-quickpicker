@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Animated,
@@ -13,10 +13,10 @@ import {
   Dimensions,
   DatePickerAndroid,
   TimePickerAndroid,
-} from 'react-native';
-import Touchable from '@appandflow/touchable';
+} from "react-native";
+import Touchable from "@appandflow/touchable";
 
-const DEFAULT_BACKGROUNDCOLOR = '#E2E2E2';
+const DEFAULT_BACKGROUNDCOLOR = "#E2E2E2";
 
 const subscribers = [];
 let uniqueId = 0;
@@ -30,14 +30,14 @@ let selectedValue = null;
 let backgroundColor = DEFAULT_BACKGROUNDCOLOR;
 let topRow = null;
 let textStyle = null;
-let doneButtonText = 'Done';
+let doneButtonText = "Done";
 let doneButtonTextStyle = null;
 let androidModalStyle = null;
 let itemStyleAndroid = null;
 let selectedItemStyleAndroid = null;
 let useNativeDriver = false;
-let pickerType = 'normal';
-let mode = Platform.OS === 'ios' ? 'date' : 'default';
+let pickerType = "normal";
+let mode = "date";
 let date = null;
 let minimumDate = null;
 let maximumDate = null;
@@ -58,8 +58,8 @@ type StateType = {
   itemStyleAndroid: ?Object,
   selectedItemStyleAndroid: ?Object,
   useNativeDriver: boolean,
-  pickerType: 'normal' | 'date',
-  mode: 'date' | 'time' | 'datetime' | 'calendar' | 'spinner' | 'default',
+  pickerType: "normal" | "date",
+  mode: "date" | "time" | "datetime" | "calendar" | "spinner",
   minimumDate: ?Date,
   maximumDate: ?Date,
 };
@@ -68,7 +68,7 @@ const pickerStore = {
   closePicker: () => {
     isOpen = false;
 
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       onValueChange = () => null;
       onTapOut = null;
       onPressDone = null;
@@ -78,8 +78,8 @@ const pickerStore = {
       items = [];
       selectedValue = null;
       // useNativeDriver = false;
-      pickerType = 'normal';
-      mode = Platform.OS === 'ios' ? 'date' : 'default';
+      pickerType = "normal";
+      mode = "date";
       minimumDate = null;
       maximumDate = null;
       pickerStore.updateSubscriber();
@@ -94,8 +94,8 @@ const pickerStore = {
         items = [];
         selectedValue = null;
         // useNativeDriver = false;
-        pickerType = 'normal';
-        mode = Platform.OS === 'ios' ? 'date' : 'default';
+        pickerType = "normal";
+        mode = "date";
         minimumDate = null;
         maximumDate = null;
         pickerStore.updateSubscriber();
@@ -119,15 +119,8 @@ const pickerStore = {
     newitemStyleAndroid: ?Object,
     newselectedItemStyleAndroid: ?Object,
     newuseNativeDriver: boolean,
-    newpickerType: ?('normal' | 'date'),
-    newmode: ?(
-      | 'date'
-      | 'time'
-      | 'datetime'
-      | 'calendar'
-      | 'spinner'
-      | 'default'
-    ),
+    newpickerType: ?("normal" | "date"),
+    newmode: ?("date" | "time" | "datetime" | "calendar" | "spinner"),
     newminimumDate: ?Date,
     newmaximumDate: ?Date,
   ) => {
@@ -247,8 +240,8 @@ type GlobalPickerParams = {
   itemStyleAndroid: ?Object,
   selectedItemStyleAndroid: ?Object,
   useNativeDriver?: boolean,
-  pickerType: 'normal' | 'date',
-  mode: 'date' | 'time' | 'datetime' | 'calendar' | 'spinner' | 'default',
+  pickerType: "normal" | "date",
+  mode: "date" | "time" | "datetime" | "calendar" | "spinner",
   minimumDate: ?Date,
   maximumDate: ?Date,
 };
@@ -312,14 +305,14 @@ export default class GlobalPicker extends React.Component {
     backgroundColor: DEFAULT_BACKGROUNDCOLOR,
     topRow: null,
     textStyle: null,
-    doneButtonText: 'Done',
+    doneButtonText: "Done",
     doneButtonTextStyle: null,
     androidModalStyle: null,
     itemStyleAndroid: null,
     selectedItemStyleAndroid: null,
     useNativeDriver: null,
-    pickerType: 'normal',
-    mode: Platform.OS === 'ios' ? 'date' : 'default',
+    pickerType: "normal",
+    mode: "date",
     minimumDate: null,
     maximumDate: null,
   };
@@ -384,7 +377,7 @@ export default class GlobalPicker extends React.Component {
         onTapOut={onTapOut || GlobalPicker.close}
         selectedValue={
           selectedValue ||
-          (pickerType === 'normal' || pickerType === 'multi'
+          (pickerType === "normal" || pickerType === "multi"
             ? null
             : new Date())
         }
@@ -399,7 +392,7 @@ export default class GlobalPicker extends React.Component {
         itemStyleAndroid={itemStyleAndroid}
         selectedItemStyleAndroid={selectedItemStyleAndroid}
         useNativeDriver={useNativeDriver || false}
-        pickerType={pickerType || 'normal'}
+        pickerType={pickerType || "normal"}
         mode={mode}
         minimumDate={minimumDate || null}
         maximumDate={maximumDate || null}
@@ -445,7 +438,7 @@ class Pick extends React.Component {
   _maskTimeout = null;
 
   _checkPickerType = () => {
-    if (this.props.pickerType === 'multi') {
+    if (this.props.pickerType === "multi") {
       const selectedValues = Array.isArray(this.props.selectedValue)
         ? this.props.selectedValue
         : [this.props.selectedValue];
@@ -499,10 +492,10 @@ class Pick extends React.Component {
       if (newProps.isOpen) {
         this.setState({ showMask: true }, () => {
           if (
-            Platform.OS !== 'ios' &&
-            (this.props.mode === 'date' ||
-              this.props.mode === 'time' ||
-              this.props.mode === 'datetime')
+            Platform.OS !== "ios" &&
+            (this.props.mode === "date" ||
+              this.props.mode === "time" ||
+              this.props.mode === "datetime")
           ) {
             this._handleAndroidDateOrTime();
           } else {
@@ -537,7 +530,7 @@ class Pick extends React.Component {
       maximumDate,
     } = this.props;
 
-    if (mode === 'date') {
+    if (mode === "date") {
       try {
         const { action, year, month, day } = await DatePickerAndroid.open({
           date: selectedValue || new Date(),
@@ -552,9 +545,9 @@ class Pick extends React.Component {
           onTapOut();
         }
       } catch ({ code, message }) {
-        console.warn('Cannot open date picker', message);
+        console.warn("Cannot open date picker", message);
       }
-    } else if (mode === 'time') {
+    } else if (mode === "time") {
       try {
         const { action, hour, minute } = await TimePickerAndroid.open({
           minute: selectedValue
@@ -579,9 +572,9 @@ class Pick extends React.Component {
           onTapOut();
         }
       } catch ({ code, message }) {
-        console.warn('Cannot open date picker', message);
+        console.warn("Cannot open date picker", message);
       }
-    } else if (mode === 'datetime') {
+    } else if (mode === "datetime") {
       try {
         const { action, year, month, day } = await DatePickerAndroid.open({
           date: selectedValue || new Date(),
@@ -614,7 +607,7 @@ class Pick extends React.Component {
           onTapOut();
         }
       } catch ({ code, message }) {
-        console.warn('Cannot open date picker', message);
+        console.warn("Cannot open date picker", message);
       }
     }
   };
@@ -639,17 +632,17 @@ class Pick extends React.Component {
           style={[
             styles.flatlistCheck,
             isSelected && {
-              color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
+              color: Platform.OS === "ios" ? "#0076FF" : "rgb(21,149,135)",
             },
           ]}
         >
-          {isSelected && '✓ '}
+          {isSelected && "✓ "}
         </Text>
         <Text
           style={[
             styles.flatlistButtonText,
             isSelected && {
-              color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
+              color: Platform.OS === "ios" ? "#0076FF" : "rgb(21,149,135)",
             },
           ]}
         >
@@ -693,7 +686,7 @@ class Pick extends React.Component {
       maximumDate,
     } = this.props;
 
-    if (pickerType === 'multi') {
+    if (pickerType === "multi") {
       return (
         <View style={[styles.bottomContainerFlatList, { backgroundColor }]}>
           <FlatList
@@ -710,7 +703,7 @@ class Pick extends React.Component {
 
     return (
       <View style={[styles.bottomContainer, { backgroundColor }]}>
-        {pickerType === 'normal' ? (
+        {pickerType === "normal" ? (
           <Picker
             selectedValue={this.props.selectedValue}
             onValueChange={itemValue => {
@@ -722,7 +715,7 @@ class Pick extends React.Component {
               <Picker.Item key={item} label={item} value={item} />
             ))}
           </Picker>
-        ) : Platform.OS === 'ios' ? (
+        ) : Platform.OS === "ios" ? (
           <DatePickerIOS
             date={selectedValue}
             mode={mode}
@@ -770,16 +763,16 @@ class Pick extends React.Component {
       maximumDate,
     } = this.props;
 
-    if (mode === 'datetime') {
+    if (mode === "datetime") {
       return (
         <View style={{ flex: 1 }}>
           <Touchable
             style={{
               flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: "center",
+              justifyContent: "center",
               borderBottomWidth: 1,
-              borderColor: 'lightgray',
+              borderColor: "lightgray",
             }}
             hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
             feedback="opacity"
@@ -803,20 +796,20 @@ class Pick extends React.Component {
                   );
                 }
               } catch ({ code, message }) {
-                console.warn('Cannot open date picker', message);
+                console.warn("Cannot open date picker", message);
               }
             }}
           >
             <Text style={styles.doneButton}>Select Date</Text>
             {selectedValue ? (
               <Text style={[styles.doneButton, { marginTop: 5 }]}>
-                {selectedValue.toLocaleDateString('en-US')}
+                {selectedValue.toLocaleDateString("en-US")}
               </Text>
             ) : null}
           </Touchable>
 
           <Touchable
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
             hitSlop={{ top: 10, right: 10, left: 10, bottom: 10 }}
             feedback="opacity"
             onPress={async () => {
@@ -844,14 +837,14 @@ class Pick extends React.Component {
                   );
                 }
               } catch ({ code, message }) {
-                console.warn('Cannot open date picker', message);
+                console.warn("Cannot open date picker", message);
               }
             }}
           >
             <Text style={styles.doneButton}>Select Time</Text>
             {selectedValue ? (
               <Text style={[styles.doneButton, { marginTop: 5 }]}>
-                {selectedValue.toLocaleTimeString('en-US')}
+                {selectedValue.toLocaleTimeString("en-US")}
               </Text>
             ) : null}
           </Touchable>
@@ -884,7 +877,7 @@ class Pick extends React.Component {
       return null;
     }
 
-    if (Platform.OS === 'android' && pickerType === 'normal') {
+    if (Platform.OS === "android" && pickerType === "normal") {
       return (
         <View style={styles.mainContainer}>
           <Touchable
@@ -904,19 +897,19 @@ class Pick extends React.Component {
           </Touchable>
           <View
             style={{
-              position: 'absolute',
-              left: '6%',
-              right: '6%',
-              bottom: '6%',
-              top: '6%',
-              flexDirection: 'row',
+              position: "absolute",
+              left: "6%",
+              right: "6%",
+              bottom: "6%",
+              top: "6%",
+              flexDirection: "row",
             }}
           >
             <FlatList
               style={[
                 {
-                  alignSelf: 'center',
-                  backgroundColor: 'white',
+                  alignSelf: "center",
+                  backgroundColor: "white",
                   borderRadius: 2,
                 },
                 androidModalStyle,
@@ -931,7 +924,7 @@ class Pick extends React.Component {
                 <Touchable
                   feedback="none"
                   native={false}
-                  style={{ minHeight: 40, justifyContent: 'center' }}
+                  style={{ minHeight: 40, justifyContent: "center" }}
                   onPress={() => {
                     this.props.onValueChange(item);
                     setTimeout(GlobalPicker.close, 10);
@@ -943,8 +936,8 @@ class Pick extends React.Component {
                         fontSize: 22,
                         color:
                           this.props.selectedValue === item
-                            ? 'rgb(21,149,135)'
-                            : 'black',
+                            ? "rgb(21,149,135)"
+                            : "black",
                       },
                       itemStyleAndroid,
                       this.props.selectedValue === item
@@ -991,7 +984,7 @@ class Pick extends React.Component {
             },
           ]}
         >
-          <View style={{ height: BORDERHEIGHT, backgroundColor: '#F1F1F1' }}>
+          <View style={{ height: BORDERHEIGHT, backgroundColor: "#F1F1F1" }}>
             {topRow ? (
               topRow
             ) : (
@@ -1020,57 +1013,57 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
-    position: 'absolute',
+    position: "absolute",
   },
   mask: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: "black",
   },
   container: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0 - HEIGHT,
     right: 0,
     left: 0,
     height: HEIGHT,
     borderTopWidth: 1,
-    borderColor: 'lightgray',
+    borderColor: "lightgray",
   },
   borderContainer: {
     height: BORDERHEIGHT,
     paddingHorizontal: 17,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: "center",
+    alignItems: "flex-end",
     borderBottomWidth: 1,
-    borderColor: 'lightgray',
+    borderColor: "lightgray",
   },
   bottomContainer: {
-    backgroundColor: '#E2E2E2',
+    backgroundColor: "#E2E2E2",
     height: HEIGHT - BORDERHEIGHT,
   },
   bottomContainerFlatList: {
-    backgroundColor: '#E2E2E2',
+    backgroundColor: "#E2E2E2",
     height: HEIGHT - BORDERHEIGHT,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 10,
   },
   doneButton: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 20,
-    color: Platform.OS === 'ios' ? '#0076FF' : 'rgb(21,149,135)',
+    color: Platform.OS === "ios" ? "#0076FF" : "rgb(21,149,135)",
   },
   flatlistButton: {
     minHeight: 58,
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: Dimensions.get('window').width,
+    alignItems: "center",
+    flexDirection: "row",
+    width: Dimensions.get("window").width,
     borderBottomWidth: 1,
-    borderColor: 'lightgray',
+    borderColor: "lightgray",
     paddingLeft: 15,
   },
   flatlistButtonText: {
     fontSize: 22,
-    color: 'gray',
-    maxWidth: Dimensions.get('window').width - 40 - 30,
+    color: "gray",
+    maxWidth: Dimensions.get("window").width - 40 - 30,
   },
   flatlistCheck: {
     fontSize: 22,
