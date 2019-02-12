@@ -37,7 +37,7 @@ let itemStyleAndroid = null;
 let selectedItemStyleAndroid = null;
 let useNativeDriver = false;
 let pickerType = "normal";
-let mode = "date";
+let mode = Platform.OS === "ios" ? "date" : "default";
 let date = null;
 let minimumDate = null;
 let maximumDate = null;
@@ -59,7 +59,7 @@ type StateType = {
   selectedItemStyleAndroid: ?Object,
   useNativeDriver: boolean,
   pickerType: "normal" | "date",
-  mode: "date" | "time" | "datetime" | "calendar" | "spinner",
+  mode: "date" | "time" | "datetime" | "calendar" | "spinner" | "default",
   minimumDate: ?Date,
   maximumDate: ?Date,
 };
@@ -79,7 +79,7 @@ const pickerStore = {
       selectedValue = null;
       // useNativeDriver = false;
       pickerType = "normal";
-      mode = "date";
+      mode = Platform.OS === "ios" ? "date" : "default";
       minimumDate = null;
       maximumDate = null;
       pickerStore.updateSubscriber();
@@ -95,7 +95,7 @@ const pickerStore = {
         selectedValue = null;
         // useNativeDriver = false;
         pickerType = "normal";
-        mode = "date";
+        mode = Platform.OS === "ios" ? "date" : "default";
         minimumDate = null;
         maximumDate = null;
         pickerStore.updateSubscriber();
@@ -120,7 +120,14 @@ const pickerStore = {
     newselectedItemStyleAndroid: ?Object,
     newuseNativeDriver: boolean,
     newpickerType: ?("normal" | "date"),
-    newmode: ?("date" | "time" | "datetime" | "calendar" | "spinner"),
+    newmode: ?(
+      | "date"
+      | "time"
+      | "datetime"
+      | "calendar"
+      | "spinner"
+      | "default"
+    ),
     newminimumDate: ?Date,
     newmaximumDate: ?Date,
   ) => {
@@ -241,7 +248,7 @@ type GlobalPickerParams = {
   selectedItemStyleAndroid: ?Object,
   useNativeDriver?: boolean,
   pickerType: "normal" | "date",
-  mode: "date" | "time" | "datetime" | "calendar" | "spinner",
+  mode: "date" | "time" | "datetime" | "calendar" | "spinner" | "default",
   minimumDate: ?Date,
   maximumDate: ?Date,
 };
@@ -312,7 +319,7 @@ export default class GlobalPicker extends React.Component {
     selectedItemStyleAndroid: null,
     useNativeDriver: null,
     pickerType: "normal",
-    mode: "date",
+    mode: Platform.OS === "ios" ? "date" : "default",
     minimumDate: null,
     maximumDate: null,
   };
