@@ -1,32 +1,32 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Expo from 'expo';
-import Touchable from '@appandflow/touchable';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { registerRootComponent } from "expo";
+import Touchable from "@appandflow/touchable";
 
-import QuickPicker from './src/QuickPicker';
+import QuickPicker from "./src/QuickPicker";
 
 export default class App extends React.Component {
   state = {
-    selectedLetter: 'a',
+    selectedLetter: "a",
   };
 
   _onPressText = () => {
     const { selectedLetter } = this.state;
     QuickPicker.open({
-      items: ['a', 'b', 'c'],
+      items: ["a", "b", "c"],
       selectedValue: this.state.selectedLetter,
-      doneButtonText: 'Save',
+      doneButtonText: "Save",
       onValueChange: selectedValueFromPicker =>
         this.setState({ selectedLetter: selectedValueFromPicker }),
       useNativeDriver: true,
       itemStyleAndroid: {
-        color: 'grey',
-        padding: 10
+        color: "grey",
+        padding: 10,
       },
       selectedItemStyleAndroid: {
-        color: '#0076ff',
-        fontWeight: '500'
-      }
+        color: "#0076ff",
+        fontWeight: "500",
+      },
     });
   };
 
@@ -52,10 +52,10 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
-Expo.registerRootComponent(App);
+registerRootComponent(App);
