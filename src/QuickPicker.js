@@ -41,6 +41,9 @@ let mode = Platform.OS === "ios" ? "date" : "default";
 let date = null;
 let minimumDate = null;
 let maximumDate = null;
+let locale = null;
+let timeZoneOffsetInMinutes = null;
+let minuteInterval = null;
 
 type StateType = {
   isOpen: boolean,
@@ -62,6 +65,10 @@ type StateType = {
   mode: "date" | "time" | "datetime" | "calendar" | "spinner" | "default",
   minimumDate: ?Date,
   maximumDate: ?Date,
+
+  locale: ?string,
+  timeZoneOffsetInMinutes: ?Number,
+  minuteInterval: ?Number,
 };
 
 const pickerStore = {
@@ -82,6 +89,9 @@ const pickerStore = {
       mode = Platform.OS === "ios" ? "date" : "default";
       minimumDate = null;
       maximumDate = null;
+      locale = null;
+      timeZoneOffsetInMinutes = null;
+      minuteInterval = null;
       pickerStore.updateSubscriber();
     } else {
       setTimeout(() => {
@@ -130,6 +140,9 @@ const pickerStore = {
     ),
     newminimumDate: ?Date,
     newmaximumDate: ?Date,
+    newlocale: ?string,
+    newtimeZoneOffsetInMinutes: ?Number,
+    newminuteInterval: ?Number,
   ) => {
     items = newitems;
     selectedValue = newselectedValue;
@@ -191,6 +204,18 @@ const pickerStore = {
       maximumDate = newmaximumDate;
     }
 
+    if (newlocale) {
+      locale = newlocale;
+    }
+
+    if (newtimeZoneOffsetInMinutes) {
+      timeZoneOffsetInMinutes = newtimeZoneOffsetInMinutes;
+    }
+
+    if (newminuteInterval) {
+      minuteInterval = newminuteInterval;
+    }
+
     isOpen = true;
     pickerStore.updateSubscriber();
   },
@@ -219,6 +244,9 @@ const pickerStore = {
       mode,
       minimumDate,
       maximumDate,
+      locale,
+      timeZoneOffsetInMinutes,
+      minuteInterval,
     };
     subscribers.forEach(sub => sub.action(state));
   },
@@ -251,6 +279,9 @@ type GlobalPickerParams = {
   mode: "date" | "time" | "datetime" | "calendar" | "spinner" | "default",
   minimumDate: ?Date,
   maximumDate: ?Date,
+  locale: ?string,
+  timeZoneOffsetInMinutes: ?Number,
+  minuteInterval: ?Number,
 };
 
 export default class GlobalPicker extends React.Component {
@@ -275,6 +306,10 @@ export default class GlobalPicker extends React.Component {
     const minimumDate = params && params.minimumDate;
     const maximumDate = params && params.maximumDate;
 
+    const locale = params && params.locale;
+    const timeZoneOffsetInMinutes = params && params.timeZoneOffsetInMinutes;
+    const minuteInterval = params && params.minuteInterval;
+
     pickerStore.openPicker(
       items,
       selectedValue,
@@ -294,6 +329,9 @@ export default class GlobalPicker extends React.Component {
       mode,
       minimumDate,
       maximumDate,
+      locale,
+      timeZoneOffsetInMinutes,
+      minuteInterval,
     );
   }
 
@@ -322,6 +360,9 @@ export default class GlobalPicker extends React.Component {
     mode: Platform.OS === "ios" ? "date" : "default",
     minimumDate: null,
     maximumDate: null,
+    locale: null,
+    timeZoneOffsetInMinutes: null,
+    minuteInterval: null,
   };
   _pickerStoreId = null;
 
@@ -347,6 +388,10 @@ export default class GlobalPicker extends React.Component {
         mode: state.mode,
         minimumDate: state.minimumDate,
         maximumDate: state.maximumDate,
+
+        locale: state.locale,
+        timeZoneOffsetInMinutes: state.timeZoneOffsetInMinutes,
+        minuteInterval: state.minuteInterval,
       }),
     );
   }
@@ -376,6 +421,9 @@ export default class GlobalPicker extends React.Component {
       mode,
       minimumDate,
       maximumDate,
+      locale,
+      timeZoneOffsetInMinutes,
+      minuteInterval,
     } = this.state;
     return (
       <Pick
@@ -403,6 +451,9 @@ export default class GlobalPicker extends React.Component {
         mode={mode}
         minimumDate={minimumDate || null}
         maximumDate={maximumDate || null}
+        locale={locale || null}
+        timeZoneOffsetInMinutes={timeZoneOffsetInMinutes || null}
+        minuteInterval={minuteInterval || null}
       />
     );
   }
@@ -430,6 +481,10 @@ type PickProps = {
   mode: string,
   minimumDate: ?Date,
   maximumDate: ?Date,
+
+  locale: ?string,
+  timeZoneOffsetInMinutes: ?Number,
+  minuteInterval: ?Number,
 };
 
 class Pick extends React.Component {
@@ -691,6 +746,9 @@ class Pick extends React.Component {
       mode,
       minimumDate,
       maximumDate,
+      locale,
+      timeZoneOffsetInMinutes,
+      minuteInterval,
     } = this.props;
 
     if (pickerType === "multi") {
@@ -729,6 +787,9 @@ class Pick extends React.Component {
             minimumDate={minimumDate}
             maximumDate={maximumDate}
             onDateChange={date => this.props.onValueChange(date)}
+            locale={locale}
+            timeZoneOffsetInMinutes={timeZoneOffsetInMinutes}
+            minuteInterval={minuteInterval}
           />
         ) : (
           this._renderAndroidTimePickerBasedOnMode()

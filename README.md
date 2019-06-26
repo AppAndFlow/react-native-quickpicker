@@ -41,9 +41,9 @@ or
 `At the root of your app (preferably but not imperatively), you want to have <QuickPicker />`
 
 ```js
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import QuickPicker from 'quick-picker';
+import React, { Component } from "react";
+import { View } from "react-native";
+import QuickPicker from "quick-picker";
 
 class App extends Component {
   render() {
@@ -65,8 +65,8 @@ class App extends Component {
 `Now if you want to open the Picker (that could be anywhere in your app's navigation), you must call QuickPicker.open({...})`
 
 ```js
-import Touchable from '@appandflow/touchable';
-import QuickPicker from 'quick-picker';
+import Touchable from "@appandflow/touchable";
+import QuickPicker from "quick-picker";
 
 export default class AnotherRandomComponent extends React.Component {
   state = {
@@ -76,8 +76,8 @@ export default class AnotherRandomComponent extends React.Component {
   _onPressText = () => {
     const { selectedLetter } = this.state;
     QuickPicker.open({
-      items: ['a', 'b', 'c'],
-      selectedValue: 'b', // this could be this.state.selectedLetter as well.
+      items: ["a", "b", "c"],
+      selectedValue: "b", // this could be this.state.selectedLetter as well.
       onValueChange: selectedValueFromPicker =>
         this.setState({ selectedLetter: selectedValueFromPicker }),
     });
@@ -133,6 +133,11 @@ Opens the picker.
         mode: ?enum('date', 'time', 'datetime'), // only if pickerType === "date"
         minimumDate: ?Date,
         maximumDate: ?Date,
+
+        locale: ?string, // see https://facebook.github.io/react-native/docs/datepickerios#locale
+        timeZoneOffsetInMinutes: ?Number, // see https://facebook.github.io/react-native/docs/datepickerios#timeZoneOffsetInMinutes
+        minuteInterval: ?Number, // see https://facebook.github.io/react-native/docs/datepickerios#minuteInterval
+
     }
 ```
 
