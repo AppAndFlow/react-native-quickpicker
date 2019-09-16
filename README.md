@@ -134,6 +134,8 @@ Opens the picker.
         minimumDate: ?Date,
         maximumDate: ?Date,
 
+        disableTopRow: ?boolean, // only on iOS, default = false. Will completely hide the top bar where you would normally find the "done" button.
+
         locale: ?string, // see https://facebook.github.io/react-native/docs/datepickerios#locale
         timeZoneOffsetInMinutes: ?Number, // see https://facebook.github.io/react-native/docs/datepickerios#timeZoneOffsetInMinutes
         minuteInterval: ?Number, // see https://facebook.github.io/react-native/docs/datepickerios#minuteInterval

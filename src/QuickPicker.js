@@ -44,6 +44,7 @@ let maximumDate = null;
 let locale = null;
 let timeZoneOffsetInMinutes = null;
 let minuteInterval = null;
+let disableTopRow = false;
 
 type StateType = {
   isOpen: boolean,
@@ -65,6 +66,7 @@ type StateType = {
   mode: "date" | "time" | "datetime" | "calendar" | "spinner" | "default",
   minimumDate: ?Date,
   maximumDate: ?Date,
+  disableTopRow?: boolean,
 
   locale: ?string,
   timeZoneOffsetInMinutes: ?Number,
@@ -75,26 +77,8 @@ const pickerStore = {
   closePicker: () => {
     isOpen = false;
 
-    if (Platform.OS === "ios") {
-      onValueChange = () => null;
-      onTapOut = null;
-      onPressDone = null;
-      // textStyle = null;
-      // doneButtonTextStyle = null;
-      // backgroundColor = DEFAULT_BACKGROUNDCOLOR;
-      items = [];
-      selectedValue = null;
-      // useNativeDriver = false;
-      pickerType = "normal";
-      mode = Platform.OS === "ios" ? "date" : "default";
-      minimumDate = null;
-      maximumDate = null;
-      locale = null;
-      timeZoneOffsetInMinutes = null;
-      minuteInterval = null;
-      pickerStore.updateSubscriber();
-    } else {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (Platform.OS === "ios") {
         onValueChange = () => null;
         onTapOut = null;
         onPressDone = null;
@@ -108,11 +92,31 @@ const pickerStore = {
         mode = Platform.OS === "ios" ? "date" : "default";
         minimumDate = null;
         maximumDate = null;
-        pickerStore.updateSubscriber();
-      }, 250);
+        locale = null;
+        timeZoneOffsetInMinutes = null;
+        minuteInterval = null;
+        disableTopRow = false;
+      } else {
+        onValueChange = () => null;
+        onTapOut = null;
+        onPressDone = null;
+        // textStyle = null;
+        // doneButtonTextStyle = null;
+        // backgroundColor = DEFAULT_BACKGROUNDCOLOR;
+        items = [];
+        selectedValue = null;
+        // useNativeDriver = false;
+        pickerType = "normal";
+        mode = Platform.OS === "ios" ? "date" : "default";
+        minimumDate = null;
+        maximumDate = null;
+        disableTopRow = false;
+      }
 
       pickerStore.updateSubscriber();
-    }
+    }, 250);
+
+    pickerStore.updateSubscriber();
   },
   openPicker: (
     newitems: ?Array<string>,
@@ -143,6 +147,7 @@ const pickerStore = {
     newlocale: ?string,
     newtimeZoneOffsetInMinutes: ?Number,
     newminuteInterval: ?Number,
+    newdisableTopRow: ?boolean,
   ) => {
     items = newitems;
     selectedValue = newselectedValue;
@@ -216,6 +221,10 @@ const pickerStore = {
       minuteInterval = newminuteInterval;
     }
 
+    if (newdisableTopRow) {
+      disableTopRow = newdisableTopRow;
+    }
+
     isOpen = true;
     pickerStore.updateSubscriber();
   },
@@ -247,6 +256,7 @@ const pickerStore = {
       locale,
       timeZoneOffsetInMinutes,
       minuteInterval,
+      disableTopRow,
     };
     subscribers.forEach(sub => sub.action(state));
   },
@@ -282,6 +292,7 @@ type GlobalPickerParams = {
   locale: ?string,
   timeZoneOffsetInMinutes: ?Number,
   minuteInterval: ?Number,
+  disableTopRow: ?boolean,
 };
 
 export default class GlobalPicker extends React.Component {
@@ -309,6 +320,7 @@ export default class GlobalPicker extends React.Component {
     const locale = params && params.locale;
     const timeZoneOffsetInMinutes = params && params.timeZoneOffsetInMinutes;
     const minuteInterval = params && params.minuteInterval;
+    const disableTopRow = params && params.disableTopRow;
 
     pickerStore.openPicker(
       items,
@@ -332,6 +344,7 @@ export default class GlobalPicker extends React.Component {
       locale,
       timeZoneOffsetInMinutes,
       minuteInterval,
+      disableTopRow,
     );
   }
 
@@ -363,6 +376,7 @@ export default class GlobalPicker extends React.Component {
     locale: null,
     timeZoneOffsetInMinutes: null,
     minuteInterval: null,
+    disableTopRow: false,
   };
   _pickerStoreId = null;
 
@@ -392,6 +406,7 @@ export default class GlobalPicker extends React.Component {
         locale: state.locale,
         timeZoneOffsetInMinutes: state.timeZoneOffsetInMinutes,
         minuteInterval: state.minuteInterval,
+        disableTopRow: state.disableTopRow,
       }),
     );
   }
@@ -424,6 +439,7 @@ export default class GlobalPicker extends React.Component {
       locale,
       timeZoneOffsetInMinutes,
       minuteInterval,
+      disableTopRow,
     } = this.state;
     return (
       <Pick
@@ -454,6 +470,7 @@ export default class GlobalPicker extends React.Component {
         locale={locale || null}
         timeZoneOffsetInMinutes={timeZoneOffsetInMinutes || null}
         minuteInterval={minuteInterval || null}
+        disableTopRow={disableTopRow}
       />
     );
   }
@@ -485,6 +502,7 @@ type PickProps = {
   locale: ?string,
   timeZoneOffsetInMinutes: ?Number,
   minuteInterval: ?Number,
+  disableTopRow: ?boolean,
 };
 
 class Pick extends React.Component {
@@ -749,11 +767,18 @@ class Pick extends React.Component {
       locale,
       timeZoneOffsetInMinutes,
       minuteInterval,
+      disableTopRow,
     } = this.props;
 
     if (pickerType === "multi") {
       return (
-        <View style={[styles.bottomContainerFlatList, { backgroundColor }]}>
+        <View
+          style={[
+            styles.bottomContainerFlatList,
+            { backgroundColor },
+            disableTopRow ? { height: HEIGHT } : {},
+          ]}
+        >
           <FlatList
             style={{ flex: 1 }}
             data={items}
@@ -767,7 +792,13 @@ class Pick extends React.Component {
     }
 
     return (
-      <View style={[styles.bottomContainer, { backgroundColor }]}>
+      <View
+        style={[
+          styles.bottomContainer,
+          { backgroundColor },
+          disableTopRow ? { height: HEIGHT } : {},
+        ]}
+      >
         {pickerType === "normal" ? (
           <Picker
             selectedValue={this.props.selectedValue}
@@ -940,6 +971,7 @@ class Pick extends React.Component {
       mode,
       minimumDate,
       maximumDate,
+      disableTopRow,
     } = this.props;
     if (!this.state.showMask) {
       return null;
@@ -1052,11 +1084,21 @@ class Pick extends React.Component {
             },
           ]}
         >
-          <View style={{ height: BORDERHEIGHT, backgroundColor: "#F1F1F1" }}>
+          <View
+            style={{
+              height: disableTopRow ? 0 : BORDERHEIGHT,
+              backgroundColor: "#F1F1F1",
+            }}
+          >
             {topRow ? (
               topRow
             ) : (
-              <View style={styles.borderContainer}>
+              <View
+                style={[
+                  styles.borderContainer,
+                  disableTopRow ? { height: 0 } : {},
+                ]}
+              >
                 <Touchable feedback="opacity" onPress={onPressDone}>
                   <Text style={[styles.doneButton, doneButtonTextStyle]}>
                     {doneButtonText}
