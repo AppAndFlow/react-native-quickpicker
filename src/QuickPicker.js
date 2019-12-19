@@ -1091,7 +1091,7 @@ class Pick extends React.Component {
             }}
           >
             {topRow ? (
-              topRow
+              topRow(onPressDone)
             ) : (
               <View
                 style={[
