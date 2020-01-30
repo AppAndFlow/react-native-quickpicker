@@ -4,7 +4,12 @@
   "description": "A plug and Play picker for React Native",
   "author": "Vincent de Lafontaine",
   "private": false,
-  "main": "./src/QuickPicker.js",
+  "scripts": {
+    "lint": "tslint --config tslint.json --project tsconfig.json",
+    "prettier": "prettier --write './src/**/*'",
+    "tsc": "tsc"
+  },
+  "main": "node_modules/expo/AppEntry.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Valiums/react-native-quickpicker.git"
@@ -18,15 +23,33 @@
   ],
   "license": "MIT",
   "files": [
-    "/src",
-    "index.js"
+    "dist/QuickPicker.js",
+    "dist/QuickPicker.d.ts"
   ],
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-gesture-handler": "*"
+  },
   "dependencies": {
-    "@appandflow/touchable": "^1.2.1"
+    "@appandflow/touchable": "2.0.0",
+    "expo": "^36.0.0",
+    "react-native-gesture-handler": "~1.5.0"
   },
   "devDependencies": {
-    "expo": "^33.0.0",
-    "react": "16.8.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz"
+    "expo": "^27.0.0",
+    "react": "16.9.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
+    "@types/expo": "^33.0.1",
+    "@types/react": "^16.9.0",
+    "@types/react-native": "^0.60.15",
+    "prettier": "^1.19.1",
+    "react-native-typescript-transformer": "^1.2.10",
+    "typescript": "^3.7.2",
+    "babel-preset-expo": "~8.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-react-hooks": "^2.3.0"
   }
 }
