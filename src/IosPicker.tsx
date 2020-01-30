@@ -10,7 +10,7 @@ const iOS_BLUE = 'rgb(0,122,255)';
 const ANDROID_PURPLE = '#6200EE';
 const BACKGROUND_COLOR = '#F1F1F1';
 
-export default class QuickPicker extends React.Component {
+export default class IosPicker extends React.Component {
   state = {
     isOpen: false,
     deltaY: new Animated.Value(0),
