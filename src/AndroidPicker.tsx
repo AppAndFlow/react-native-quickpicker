@@ -15,10 +15,10 @@ const BACKGROUND_COLOR = '#E2E2E2';
 interface P {
   onPressDone: () => void;
   onChange: any;
-  getRef: (iosPicker: IosPicker) => void;
+  getRef: (androidPicker: AndroidPicker) => void;
 }
 
-export default class IosPicker extends React.Component<P> {
+export default class AndroidPicker extends React.Component<P> {
   state = {
     isOpen: false,
     deltaY: new Animated.Value(0),
@@ -29,7 +29,7 @@ export default class IosPicker extends React.Component<P> {
   }
 
   _animateOpen = () => {
-    if (Platform.OS !== 'ios') {
+    if (Platform.OS !== 'android') {
       return null;
     }
     Animated.timing(this.state.deltaY, {
@@ -40,7 +40,7 @@ export default class IosPicker extends React.Component<P> {
   };
 
   _animateClose = () => {
-    if (Platform.OS !== 'ios') {
+    if (Platform.OS !== 'android') {
       return null;
     }
     Animated.timing(this.state.deltaY, {
@@ -101,7 +101,7 @@ export default class IosPicker extends React.Component<P> {
 
   render() {
     const { pickerOptions } = pickerStore;
-    if (Platform.OS !== 'ios') {
+    if (Platform.OS !== 'android') {
       return null;
     }
 

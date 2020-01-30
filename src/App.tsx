@@ -6,16 +6,19 @@ import QuickPicker from './QuickPicker';
 
 export default class App extends React.Component {
   state = {
-    selectedLetter: {
-      value: '2',
-      label: 'salut2',
-    },
+    selectedLetter: new Date(),
   };
 
   _onPressText = () => {
     QuickPicker.open({
       onChange: selectedLetter => this.setState({ selectedLetter }),
-      item: this.state.selectedLetter,
+      date: this.state.selectedLetter,
+      pickerType: 'time',
+      mode: 'datetime',
+      // disableTopRow: true,
+      // doneButtonText: 'Termine',
+
+      onPressDone: item => console.warn(item),
       items: [
         {
           value: '1',
@@ -58,7 +61,8 @@ export default class App extends React.Component {
           onPress={this._onPressText}
         >
           <Text>
-            Open up picker, selected letter: {this.state.selectedLetter?.value}
+            Open up picker, selected letter:{' '}
+            {this.state.selectedLetter.toLocaleTimeString()}
           </Text>
         </Touchable>
         <QuickPicker />

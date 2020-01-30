@@ -7,6 +7,7 @@ import pickerStore, {
   ANIMATION_DURATION,
 } from './PickerStore';
 import IosPicker from './IosPicker';
+import AndroidPicker from './AndroidPicker';
 
 export default class QuickPicker extends React.Component {
   state = {
@@ -14,6 +15,7 @@ export default class QuickPicker extends React.Component {
     opacity: new Animated.Value(0),
   };
   _iosPicker: IosPicker | null = null;
+  _androidPicker: AndroidPicker | null = null;
 
   static open(options: PickerOptions) {
     pickerStore.open(options);
@@ -31,12 +33,14 @@ export default class QuickPicker extends React.Component {
     this.setState({ isOpen: true }, () => {
       this._animateOpen();
       this._iosPicker?._animateOpen();
+      this._androidPicker?._animateOpen();
     });
   };
 
   _close = () => {
     this._animateClose();
     this._iosPicker?._animateClose();
+    this._androidPicker?._animateClose();
     setTimeout(() => this.setState({ isOpen: false }), ANIMATION_DURATION);
   };
 
@@ -64,11 +68,15 @@ export default class QuickPicker extends React.Component {
     QuickPicker.close();
   };
 
-  _onChange = (item: Item) => {
+  _onChange = (item: Item & Date) => {
     const { pickerOptions } = pickerStore;
     if (pickerOptions.onChange && item) {
       pickerOptions.onChange(item);
-      pickerOptions.item = item;
+      if (item.label) {
+        pickerOptions.item = item;
+      } else {
+        pickerOptions.date = item;
+      }
     }
   };
 
@@ -107,6 +115,11 @@ export default class QuickPicker extends React.Component {
         <IosPicker
           onPressDone={this._onPressDone}
           getRef={iosPicker => (this._iosPicker = iosPicker)}
+          onChange={this._onChange}
+        />
+        <AndroidPicker
+          onPressDone={this._onPressDone}
+          getRef={_androidPicker => (this._androidPicker = _androidPicker)}
           onChange={this._onChange}
         />
       </View>

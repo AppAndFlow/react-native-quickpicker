@@ -16,17 +16,29 @@ export interface Item {
 
 export interface PickerOptions {
   onTapOut?: () => void;
-  items: Item[];
+  items?: Item[];
   item?: Item | null;
-  onChange?: (item: Item) => void;
+  onChange?: (item: Item | Date) => void;
   doneButtonTextStyle?: TextStyle;
-  onPressDone?: (item: Item) => void;
+  onPressDone?: (item: Item | Date) => void;
   doneButtonText?: string;
   disableTopRow?: boolean;
   topRow?: React.ReactNode;
-  pickerType?: 'normal';
+  pickerType?: 'normal' | 'time';
   pickerStyleType?: any;
   itemStyle?: StyleProp<TextStyle>;
+
+  date?: Date;
+  mode?: 'date' | 'time' | 'datetime' | 'countdown';
+  display?: 'default' | 'spinner' | 'calendar' | 'clock';
+  maximumDate?: Date;
+  minimumDate?: Date;
+  timeZoneOffsetInMinutes?: number;
+  locale?: string;
+  is24Hour?: boolean;
+  minuteInterval?: 1 | 2 | 6 | 5 | 4 | 3 | 10 | 12 | 15 | 20 | 30;
+
+  useAndroidLayout?: boolean;
 }
 
 const initialPickerOptions: PickerOptions = {
@@ -41,6 +53,8 @@ const initialPickerOptions: PickerOptions = {
   pickerType: 'normal',
   pickerStyleType: undefined,
   itemStyle: undefined,
+
+  useAndroidLayout: false,
 };
 
 const pickerStore: PickerStore = {
