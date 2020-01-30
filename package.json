@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@appandflow/touchable": "2.0.0",
+    "@react-native-community/datetimepicker": "^2.1.0",
     "expo": "^36.0.0",
     "react-native-gesture-handler": "~1.5.0"
   },

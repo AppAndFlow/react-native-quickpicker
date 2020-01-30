@@ -1,22 +1,5 @@
-import QuickPicker from './QuickPickerv2';
-import { TextStyle } from 'react-native';
-
-interface Item {
-  value: string | number;
-  label: string;
-}
-
-export interface PickerOptions {
-  onTapOut?: () => void;
-  items: Item[];
-  value?: Item;
-  onChange?: (item: Item) => void;
-  doneButtonTextStyle?: TextStyle;
-  onPressDone?: (item: Item) => void;
-  doneButtonText?: string;
-  disableTopRow?: boolean;
-  topRow?: React.ReactNode;
-}
+import QuickPicker from './QuickPicker';
+import { TextStyle, StyleProp } from 'react-native';
 
 export interface PickerStore {
   isOpen: boolean;
@@ -26,15 +9,38 @@ export interface PickerStore {
   pickerOptions: PickerOptions;
 }
 
+export interface Item {
+  value: string | number;
+  label: string;
+}
+
+export interface PickerOptions {
+  onTapOut?: () => void;
+  items: Item[];
+  item?: Item | null;
+  onChange?: (item: Item) => void;
+  doneButtonTextStyle?: TextStyle;
+  onPressDone?: (item: Item) => void;
+  doneButtonText?: string;
+  disableTopRow?: boolean;
+  topRow?: React.ReactNode;
+  pickerType?: 'normal';
+  pickerStyleType?: any;
+  itemStyle?: StyleProp<TextStyle>;
+}
+
 const initialPickerOptions: PickerOptions = {
   onTapOut: undefined,
   items: [],
-  value: undefined,
+  item: undefined,
   onChange: undefined,
   doneButtonTextStyle: undefined,
   onPressDone: undefined,
   doneButtonText: undefined,
   disableTopRow: undefined,
+  pickerType: 'normal',
+  pickerStyleType: undefined,
+  itemStyle: undefined,
 };
 
 const pickerStore: PickerStore = {
@@ -56,3 +62,5 @@ const pickerStore: PickerStore = {
 };
 
 export default pickerStore;
+
+export const ANIMATION_DURATION = 250;

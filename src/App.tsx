@@ -2,15 +2,31 @@ import * as React from 'react';
 // import { registerRootComponent } from 'expo';
 import { StyleSheet, View, Text } from 'react-native';
 import Touchable from '@appandflow/touchable';
-import QuickPicker from './QuickPickerv2';
+import QuickPicker from './QuickPicker';
 
 export default class App extends React.Component {
   state = {
-    selectedLetter: new Date(),
+    selectedLetter: {
+      value: '2',
+      label: 'salut2',
+    },
   };
 
   _onPressText = () => {
-    QuickPicker.open();
+    QuickPicker.open({
+      onChange: selectedLetter => this.setState({ selectedLetter }),
+      item: this.state.selectedLetter,
+      items: [
+        {
+          value: '1',
+          label: 'salut1',
+        },
+        {
+          value: '2',
+          label: 'salut2',
+        },
+      ],
+    });
     /*
     const { selectedLetter } = this.state;
     QuickPicker.open({
@@ -41,7 +57,9 @@ export default class App extends React.Component {
           native={false}
           onPress={this._onPressText}
         >
-          <Text>Open up picker, selected letter:</Text>
+          <Text>
+            Open up picker, selected letter: {this.state.selectedLetter?.value}
+          </Text>
         </Touchable>
         <QuickPicker />
       </View>
