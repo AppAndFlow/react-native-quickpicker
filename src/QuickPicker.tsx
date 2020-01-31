@@ -54,7 +54,7 @@ export default class QuickPicker extends React.Component {
     Animated.timing(this.state.opacity, {
       toValue: 0.4,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
   };
 
@@ -62,7 +62,7 @@ export default class QuickPicker extends React.Component {
     Animated.timing(this.state.opacity, {
       toValue: 0,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
   };
 
@@ -89,6 +89,11 @@ export default class QuickPicker extends React.Component {
     }
 
     if (Platform.OS === 'android') {
+      if (pickerOptions.onPressDone && pickerOptions.item) {
+        pickerOptions.onPressDone(pickerOptions.item);
+      } else if (pickerOptions.onPressDone && pickerOptions.date) {
+        pickerOptions.onPressDone(pickerOptions.date);
+      }
       QuickPicker.close();
     }
   };
@@ -105,7 +110,6 @@ export default class QuickPicker extends React.Component {
       return (
         <AndroidPicker
           date={pickerOptions.date || new Date()}
-          onPressDone={this._onPressDone}
           getRef={_androidPicker => (this._androidPicker = _androidPicker)}
           onChange={this._onChange}
           onCancel={QuickPicker.close}

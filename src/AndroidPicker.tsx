@@ -8,7 +8,6 @@ import pickerStore, { ANIMATION_DURATION, Item } from './PickerStore';
 const ANDROID_SECONDARY_VARIANT = '#018786';
 
 interface P {
-  onPressDone: (item: Item | Date) => void;
   onChange: any;
   getRef: (androidPicker: AndroidPicker) => void;
   date: Date;
@@ -34,12 +33,12 @@ export default class AndroidPicker extends React.Component<P> {
     Animated.timing(this.state.opacity, {
       toValue: 0.4,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
     Animated.timing(this.state.windowOpacity, {
       toValue: 1,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
   };
 
@@ -47,12 +46,12 @@ export default class AndroidPicker extends React.Component<P> {
     Animated.timing(this.state.opacity, {
       toValue: 0,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
     Animated.timing(this.state.windowOpacity, {
       toValue: 0,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
   };
 
@@ -98,21 +97,37 @@ export default class AndroidPicker extends React.Component<P> {
           />
         </Touchable>
         <Animated.View
-          style={{
-            backgroundColor: 'rgb(250,250,250)',
-            maxHeight: '70%',
-            padding: 20,
-            minHeight: '25%',
-            width: '100%',
-            borderRadius: 3,
-            opacity: this.state.windowOpacity,
-          }}
+          style={[
+            {
+              backgroundColor: 'rgb(250,250,250)',
+              padding: 20,
+              minHeight: 270,
+              width: '100%',
+              borderRadius: 3,
+              opacity: this.state.windowOpacity,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+            },
+            pickerOptions.androidModalStyle
+              ? pickerOptions.androidModalStyle
+              : {},
+          ]}
         >
           <FlatList
             data={pickerOptions.items || []}
             style={{ flex: 1 }}
             renderItem={({ item }) => (
               <RowItem
+                style={pickerOptions.androidItemStyle}
+                textStyle={pickerOptions.androidItemTextStyle}
+                selectedStyle={pickerOptions.androidSelectedItemStyle}
                 onPress={() => this.setState({ item })}
                 label={item.label}
                 selected={
@@ -171,7 +186,7 @@ const AndroidButtonText = ({
     feedback="opacity"
     native={false}
     onPress={onPress}
-    hitslop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+    hitslop={{ top: 20, left: 20, right: 20, bottom: 20 }}
     style={containerStyle}
   >
     <Text
@@ -193,15 +208,41 @@ const RowItem = ({
   label,
   selected,
   onPress,
+  style = {},
+  textStyle = {},
+  selectedStyle = {},
 }: {
   label: string;
   selected?: boolean;
   onPress: () => void;
+  style?: any;
+  textStyle?: any;
+  selectedStyle?: any;
 }) => (
   <AndroidButtonText
     text={label}
-    style={{ color: selected ? ANDROID_SECONDARY_VARIANT : '#616161' }}
+    style={{
+      color: selected ? ANDROID_SECONDARY_VARIANT : '#616161',
+      ...textStyle,
+    }}
     onPress={onPress}
-    containerStyle={{ marginBottom: 15 }}
+    containerStyle={
+      selected
+        ? {
+            marginBottom: 15,
+            height: 35,
+            justifyContent: 'center',
+            minWidth: 40,
+            ...style,
+            ...selectedStyle,
+          }
+        : {
+            marginBottom: 15,
+            height: 35,
+            justifyContent: 'center',
+            minWidth: 40,
+            ...style,
+          }
+    }
   />
 );

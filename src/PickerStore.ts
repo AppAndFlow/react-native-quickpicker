@@ -1,5 +1,5 @@
 import QuickPicker from './QuickPicker';
-import { TextStyle, StyleProp, Platform } from 'react-native';
+import { TextStyle, StyleProp, Platform, ViewStyle } from 'react-native';
 
 export interface PickerStore {
   isOpen: boolean;
@@ -39,6 +39,12 @@ export interface PickerOptions {
   minuteInterval?: 1 | 2 | 6 | 5 | 4 | 3 | 10 | 12 | 15 | 20 | 30;
 
   cancelButtonText?: string;
+
+  androidModalStyle?: StyleProp<ViewStyle>;
+  androidItemStyle?: StyleProp<ViewStyle>;
+  androidItemTextStyle?: StyleProp<TextStyle>;
+  androidSelectedItemStyle?: StyleProp<ViewStyle>;
+  useNativeDriver?: boolean;
 }
 
 const initialPickerOptions: PickerOptions = {
@@ -64,6 +70,13 @@ const initialPickerOptions: PickerOptions = {
   is24Hour: undefined,
   minuteInterval: undefined,
   cancelButtonText: undefined,
+
+  androidModalStyle: undefined,
+  androidItemStyle: undefined,
+  androidItemTextStyle: undefined,
+  androidSelectedItemStyle: undefined,
+
+  useNativeDriver: true,
 };
 
 const pickerStore: PickerStore = {

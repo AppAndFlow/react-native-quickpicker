@@ -19,11 +19,17 @@ export default class App extends React.Component {
 
       // disableTopRow: true,
       // doneButtonText: 'Termine',
+      // pickerType: 'time',
+      // date: this.state.selectedDate,
 
       item: this.state.item,
+      // androidModalStyle: { backgroundColor: 'red' },
+      androidItemStyle: { backgroundColor: 'red' },
+      androidModalStyle: { height: 600 },
+      androidSelectedItemStyle: { backgroundColor: 'blue' },
 
-      onPressDone: item => console.warn(item),
-      items: Array.from({ length: 3 }, (v, i) => ({
+      // onPressDone: selectedDate => console.warn(selectedDate),
+      items: Array.from({ length: 30 }, (v, i) => ({
         value: String(i),
         label: `salut${i}`,
       })),

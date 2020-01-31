@@ -35,7 +35,7 @@ export default class IosPicker extends React.Component<P> {
     Animated.timing(this.state.deltaY, {
       toValue: -HEIGHT,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
   };
 
@@ -46,7 +46,7 @@ export default class IosPicker extends React.Component<P> {
     Animated.timing(this.state.deltaY, {
       toValue: 0,
       duration: ANIMATION_DURATION,
-      useNativeDriver: true,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
     }).start();
   };
 
