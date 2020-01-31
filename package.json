@@ -1,6 +1,6 @@
 {
   "name": "quick-picker",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.0",
   "description": "A plug and Play picker for React Native",
   "author": "Vincent de Lafontaine",
   "private": false,
@@ -9,7 +9,7 @@
     "prettier": "prettier --write './src/**/*'",
     "build": "tsc -- --jsx 'react' --noEmit ./src/* --outDir './dist'"
   },
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "dist/QuickPicker.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Valiums/react-native-quickpicker.git"
