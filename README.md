@@ -58,7 +58,7 @@ class App extends Component {
 }
 ```
 
-`Now if you want to open the Picker (that could be anywhere in your app's navigation), you must call QuickPicker.open({...})`
+`To open the Picker (that could be anywhere deeper in your app), you must call QuickPicker.open({...})`
 
 ```js
 import QuickPicker from 'quick-picker';
