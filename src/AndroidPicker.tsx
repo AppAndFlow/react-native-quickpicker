@@ -12,6 +12,7 @@ interface P {
   onChange: any;
   getRef: (androidPicker: AndroidPicker) => void;
   date: Date;
+  item: Item;
   onCancel: () => void;
 }
 
@@ -21,11 +22,12 @@ export default class AndroidPicker extends React.Component<P> {
     opacity: new Animated.Value(0),
     windowOpacity: new Animated.Value(0),
     date: new Date(),
+    item: null,
   };
 
   componentDidMount() {
     this.props.getRef(this);
-    this.setState({ date: this.props.date });
+    this.setState({ date: this.props.date, item: this.props.item });
   }
 
   _animateOpen = () => {
@@ -106,8 +108,21 @@ export default class AndroidPicker extends React.Component<P> {
             opacity: this.state.windowOpacity,
           }}
         >
-          <View style={{ flex: 1 }} />
-          {/* <FlatList data={pickerOptions.items || []} style={{ flex: 1 }} /> */}
+          <FlatList
+            data={pickerOptions.items || []}
+            style={{ flex: 1 }}
+            renderItem={({ item }) => (
+              <RowItem
+                onPress={() => this.setState({ item })}
+                label={item.label}
+                selected={
+                  // @ts-ignore
+                  this.state.item ? item.value === this.state.item.value : false
+                }
+              />
+            )}
+            keyExtractor={item => String(item.value)}
+          />
           <View style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
             <AndroidButtonText
               text={cancelButtonText}
@@ -116,7 +131,7 @@ export default class AndroidPicker extends React.Component<P> {
             />
             <AndroidButtonText
               text={doneButtonText}
-              onPress={this.props.onChange}
+              onPress={() => this.props.onChange(this.state.item)}
             />
           </View>
         </Animated.View>
@@ -145,16 +160,19 @@ const AndroidButtonText = ({
   text,
   onPress,
   style,
+  containerStyle,
 }: {
   text: string;
   onPress: any;
   style?: any;
+  containerStyle?: any;
 }) => (
   <Touchable
     feedback="opacity"
     native={false}
     onPress={onPress}
     hitslop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+    style={containerStyle}
   >
     <Text
       style={[
@@ -169,4 +187,21 @@ const AndroidButtonText = ({
       {text}
     </Text>
   </Touchable>
+);
+
+const RowItem = ({
+  label,
+  selected,
+  onPress,
+}: {
+  label: string;
+  selected?: boolean;
+  onPress: () => void;
+}) => (
+  <AndroidButtonText
+    text={label}
+    style={{ color: selected ? ANDROID_SECONDARY_VARIANT : '#616161' }}
+    onPress={onPress}
+    containerStyle={{ marginBottom: 15 }}
+  />
 );

@@ -23,16 +23,10 @@ export default class App extends React.Component {
       item: this.state.item,
 
       onPressDone: item => console.warn(item),
-      items: [
-        {
-          value: '1',
-          label: 'salut1',
-        },
-        {
-          value: '2',
-          label: 'salut2',
-        },
-      ],
+      items: Array.from({ length: 3 }, (v, i) => ({
+        value: String(i),
+        label: `salut${i}`,
+      })),
     });
     /*
     const { selectedLetter } = this.state;

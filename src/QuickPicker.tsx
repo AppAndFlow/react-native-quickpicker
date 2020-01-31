@@ -109,6 +109,7 @@ export default class QuickPicker extends React.Component {
           getRef={_androidPicker => (this._androidPicker = _androidPicker)}
           onChange={this._onChange}
           onCancel={QuickPicker.close}
+          item={pickerOptions.item!}
         />
       );
     }
