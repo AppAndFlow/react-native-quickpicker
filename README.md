@@ -45,13 +45,11 @@ import QuickPicker from 'quick-picker';
 
 class App extends Component {
   render() {
-    const content = null;
     return (
       <View style={styles.fill}>
         <StatusBar />
         <SideMenu>
           <OtherFancyStuff />
-          {content}
         </SideMenu>
         <QuickPicker />
       </View>
@@ -63,45 +61,40 @@ class App extends Component {
 `Now if you want to open the Picker (that could be anywhere in your app's navigation), you must call QuickPicker.open({...})`
 
 ```js
-import Touchable from '@appandflow/touchable';
 import QuickPicker from 'quick-picker';
 
 export default class AnotherRandomComponent extends React.Component {
   state = {
-    selectedLetter: null,
+    item: {
+      value: '1',
+      label: 'salut',
+    },
   };
 
-  _onPressText = () => {
-    const { selectedLetter } = this.state;
+  _onPressButton = () => {
     QuickPicker.open({
-      items: ['a', 'b', 'c'],
-      selectedValue: 'b', // this could be this.state.selectedLetter as well.
-      onValueChange: selectedValueFromPicker =>
-        this.setState({ selectedLetter: selectedValueFromPicker }),
+      onChange: item => this.setState({ item }),
+      item: this.state.item,
     });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Touchable
-          feedback="opacity"
-          native={false}
-          onPress={this._onPressText}
-        >
-          <Text>
-            Open up picker, selected letter: {this.state.selectedLetter}
-          </Text>
-        </Touchable>
+        <TouchableOpacity onPress={this._onPressButton}>
+          <Text>Open up picker, selected value: {this.state.item.label}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 ```
 
-`Now when the user will touch the button (<Touchable>) the Picker will open with the defined params in QuickPicker.open({...})`
+`Now when the user will touch the button the Picker will open with the defined params in QuickPicker.open({...})`
 
 ## API
+
+#### Methodes
 
 `Static QuickPicker.open(pickerOptions)`
 
