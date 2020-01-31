@@ -74,6 +74,16 @@ export default class AnotherRandomComponent extends React.Component {
   _onPressButton = () => {
     QuickPicker.open({
       onChange: item => this.setState({ item }),
+      items: [
+        {
+          value: '1',
+          label: 'salut',
+        },
+        {
+          value: '2',
+          label: 'salut2',
+        },
+      ],
       item: this.state.item,
     });
   };
