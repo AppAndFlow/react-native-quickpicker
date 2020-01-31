@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StyleSheet, Platform, Text } from 'react-native';
+import { View, Animated, StyleSheet, Platform } from 'react-native';
 import Touchable from '@appandflow/touchable';
 import pickerStore, {
   PickerOptions,

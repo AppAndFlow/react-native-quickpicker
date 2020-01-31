@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "tslint --config tslint.json --project tsconfig.json",
     "prettier": "prettier --write './src/**/*'",
-    "tsc": "tsc"
+    "build": "tsc -- --jsx 'react' --noEmit ./src/* --outDir './dist'"
   },
   "main": "node_modules/expo/AppEntry.js",
   "repository": {
@@ -24,7 +24,13 @@
   "license": "MIT",
   "files": [
     "dist/QuickPicker.js",
-    "dist/QuickPicker.d.ts"
+    "dist/QuickPicker.d.ts",
+    "dist/AndroidPicker.js",
+    "dist/AndroidPicker.d.ts",
+    "dist/IosPicker.js",
+    "dist/IosPicker.d.ts",
+    "dist/PickerStore.js",
+    "dist/PickerStore.d.ts"
   ],
   "peerDependencies": {
     "react": "*",
@@ -34,7 +40,6 @@
   "dependencies": {
     "@appandflow/touchable": "2.0.0",
     "@react-native-community/datetimepicker": "^2.1.1",
-    "expo": "^36.0.0",
     "react-native-gesture-handler": "~1.5.0"
   },
   "devDependencies": {
@@ -43,7 +48,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.1.tar.gz",
     "@types/expo": "^33.0.1",
     "@types/react": "^16.9.0",
-    "@types/react-native": "^0.60.15",
+    "@types/react-native": "^0.61.9",
     "prettier": "^1.19.1",
     "react-native-typescript-transformer": "^1.2.10",
     "typescript": "^3.7.2",

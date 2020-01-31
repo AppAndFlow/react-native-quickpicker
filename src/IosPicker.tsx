@@ -74,6 +74,7 @@ export default class IosPicker extends React.Component<P> {
             itemStyle={pickerOptions.itemStyle}
           >
             {items.map((item, index) => (
+              // @ts-ignore
               <Picker.Item
                 key={`${item.value}-${index}-pickeritem`}
                 label={item.label}

@@ -29,10 +29,10 @@ export default class App extends React.Component {
       androidSelectedItemStyle: { backgroundColor: 'blue' },
 
       // onPressDone: selectedDate => console.warn(selectedDate),
-      items: Array.from({ length: 30 }, (v, i) => ({
-        value: String(i),
-        label: `salut${i}`,
-      })),
+      // items: Array.from({ length: 30 }, (v, i) => ({
+      //   value: String(i),
+      //   label: `salut${i}`,
+      // })),
     });
     /*
     const { selectedLetter } = this.state;

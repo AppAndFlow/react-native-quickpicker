@@ -1,5 +1,5 @@
 import QuickPicker from './QuickPicker';
-import { TextStyle, StyleProp, Platform, ViewStyle } from 'react-native';
+import { TextStyle, StyleProp, ViewStyle } from 'react-native';
 
 export interface PickerStore {
   isOpen: boolean;
