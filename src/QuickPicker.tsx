@@ -33,6 +33,7 @@ export default class QuickPicker extends React.Component {
     this.setState({ isOpen: true }, () => {
       this._animateOpen();
       this._iosPicker?._animateOpen();
+      this._androidPicker?._animateOpen();
     });
   };
 
@@ -100,13 +101,14 @@ export default class QuickPicker extends React.Component {
       return null;
     }
 
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' || true) {
       return (
         <AndroidPicker
           date={pickerOptions.date || new Date()}
           onPressDone={this._onPressDone}
           getRef={_androidPicker => (this._androidPicker = _androidPicker)}
           onChange={this._onChange}
+          onCancel={QuickPicker.close}
         />
       );
     }

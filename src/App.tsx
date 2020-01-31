@@ -15,14 +15,12 @@ export default class App extends React.Component {
 
   _onPressText = () => {
     QuickPicker.open({
-      onChange: selectedDate => this.setState({ selectedDate }),
-      date: this.state.selectedDate,
-      pickerType: 'time',
-      mode: 'time',
+      onChange: item => this.setState({ item }),
+
       // disableTopRow: true,
       // doneButtonText: 'Termine',
 
-      // item: this.state.item,
+      item: this.state.item,
 
       onPressDone: item => console.warn(item),
       items: [

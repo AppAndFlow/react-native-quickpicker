@@ -37,6 +37,8 @@ export interface PickerOptions {
   locale?: string;
   is24Hour?: boolean;
   minuteInterval?: 1 | 2 | 6 | 5 | 4 | 3 | 10 | 12 | 15 | 20 | 30;
+
+  cancelButtonText?: string;
 }
 
 const initialPickerOptions: PickerOptions = {
@@ -61,6 +63,7 @@ const initialPickerOptions: PickerOptions = {
   locale: undefined,
   is24Hour: undefined,
   minuteInterval: undefined,
+  cancelButtonText: undefined,
 };
 
 const pickerStore: PickerStore = {
@@ -83,4 +86,4 @@ const pickerStore: PickerStore = {
 
 export default pickerStore;
 
-export const ANIMATION_DURATION = Platform.OS === 'ios' ? 250 : 1;
+export const ANIMATION_DURATION = 250;

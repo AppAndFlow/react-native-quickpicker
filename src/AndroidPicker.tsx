@@ -1,29 +1,25 @@
 import * as React from 'react';
-import { View, Animated, Platform, Text, Picker } from 'react-native';
+import { View, Animated, Text, StyleSheet, FlatList } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Touchable from '@appandflow/touchable';
 import pickerStore, { ANIMATION_DURATION, Item } from './PickerStore';
 
-const HEIGHT = 250;
-
-const BORDERHEIGHT = 50;
-const iOS_BLUE = 'rgb(0,122,255)';
-// const ANDROID_PURPLE = '#6200EE';
-const TOP_BACKGROUND_COLOR = '#F1F1F1';
-const BACKGROUND_COLOR = '#E2E2E2';
+const ANDROID_SECONDARY_VARIANT = '#018786';
 
 interface P {
   onPressDone: (item: Item | Date) => void;
   onChange: any;
   getRef: (androidPicker: AndroidPicker) => void;
   date: Date;
+  onCancel: () => void;
 }
 
 export default class AndroidPicker extends React.Component<P> {
   state = {
     isOpen: true,
-    deltaY: new Animated.Value(0),
+    opacity: new Animated.Value(0),
+    windowOpacity: new Animated.Value(0),
     date: new Date(),
   };
 
@@ -33,15 +29,25 @@ export default class AndroidPicker extends React.Component<P> {
   }
 
   _animateOpen = () => {
-    Animated.timing(this.state.deltaY, {
-      toValue: -HEIGHT,
+    Animated.timing(this.state.opacity, {
+      toValue: 0.4,
+      duration: ANIMATION_DURATION,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(this.state.windowOpacity, {
+      toValue: 1,
       duration: ANIMATION_DURATION,
       useNativeDriver: true,
     }).start();
   };
 
   _animateClose = () => {
-    Animated.timing(this.state.deltaY, {
+    Animated.timing(this.state.opacity, {
+      toValue: 0,
+      duration: ANIMATION_DURATION,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(this.state.windowOpacity, {
       toValue: 0,
       duration: ANIMATION_DURATION,
       useNativeDriver: true,
@@ -51,13 +57,71 @@ export default class AndroidPicker extends React.Component<P> {
   render() {
     const { pickerOptions } = pickerStore;
 
-    const doneButtonText = pickerOptions.doneButtonText || 'Done';
+    const doneButtonText = pickerOptions.doneButtonText || 'Ok';
+    const cancelButtonText = pickerOptions.cancelButtonText || 'Cancel';
 
     if (!this.state.isOpen) {
       return null;
     }
 
-    return pickerOptions.pickerType === 'normal' ? null : (
+    return pickerOptions.pickerType === 'normal' ? (
+      <View
+        style={{
+          flex: 1,
+          position: 'absolute',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: '10%',
+          ...StyleSheet.absoluteFillObject,
+        }}
+      >
+        <Touchable
+          feedback="none"
+          native={false}
+          style={{
+            flex: 1,
+            position: 'absolute',
+            ...StyleSheet.absoluteFillObject,
+          }}
+          onPress={pickerOptions.onTapOut || this.props.onCancel}
+        >
+          <Animated.View
+            style={[
+              {
+                opacity: this.state.opacity,
+                flex: 1,
+                backgroundColor: 'black',
+              },
+            ]}
+          />
+        </Touchable>
+        <Animated.View
+          style={{
+            backgroundColor: 'rgb(250,250,250)',
+            maxHeight: '70%',
+            padding: 20,
+            minHeight: '25%',
+            width: '100%',
+            borderRadius: 3,
+            opacity: this.state.windowOpacity,
+          }}
+        >
+          <View style={{ flex: 1 }} />
+          {/* <FlatList data={pickerOptions.items || []} style={{ flex: 1 }} /> */}
+          <View style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
+            <AndroidButtonText
+              text={cancelButtonText}
+              onPress={pickerOptions.onTapOut || this.props.onCancel}
+              style={{ marginRight: 30 }}
+            />
+            <AndroidButtonText
+              text={doneButtonText}
+              onPress={this.props.onChange}
+            />
+          </View>
+        </Animated.View>
+      </View>
+    ) : (
       <DateTimePicker
         value={this.state.date}
         // @ts-ignore
@@ -74,69 +138,35 @@ export default class AndroidPicker extends React.Component<P> {
         minuteInterval={pickerOptions.minuteInterval}
       />
     );
-
-    return (
-      <Animated.View
-        style={[
-          {
-            position: 'absolute',
-            bottom: 0 - HEIGHT,
-            right: 0,
-            left: 0,
-            height: HEIGHT,
-            borderTopWidth: 1,
-            borderColor: 'lightgray',
-            transform: [
-              {
-                translateY: this.state.deltaY,
-              },
-            ],
-          },
-        ]}
-      >
-        <View
-          style={{
-            height: pickerOptions.disableTopRow ? 0 : BORDERHEIGHT,
-            backgroundColor: TOP_BACKGROUND_COLOR,
-          }}
-        >
-          {pickerOptions.topRow ? (
-            pickerOptions.topRow
-          ) : (
-            <View
-              style={[
-                {
-                  height: BORDERHEIGHT,
-                  paddingHorizontal: 17,
-                  justifyContent: 'center',
-                  alignItems: 'flex-end',
-                  borderBottomWidth: 1,
-                  borderColor: 'lightgray',
-                },
-                pickerOptions.disableTopRow ? { height: 0 } : {},
-              ]}
-            >
-              <Touchable feedback="opacity" onPress={this.props.onPressDone}>
-                <Text
-                  style={[
-                    {
-                      fontWeight: '600',
-                      fontSize: 20,
-                      color: iOS_BLUE,
-                    },
-                    pickerOptions.doneButtonTextStyle
-                      ? { ...pickerOptions.doneButtonTextStyle }
-                      : {},
-                  ]}
-                >
-                  {doneButtonText}
-                </Text>
-              </Touchable>
-            </View>
-          )}
-        </View>
-        {this._renderPickerBasedOnType()}
-      </Animated.View>
-    );
   }
 }
+
+const AndroidButtonText = ({
+  text,
+  onPress,
+  style,
+}: {
+  text: string;
+  onPress: any;
+  style?: any;
+}) => (
+  <Touchable
+    feedback="opacity"
+    native={false}
+    onPress={onPress}
+    hitslop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+  >
+    <Text
+      style={[
+        {
+          color: ANDROID_SECONDARY_VARIANT,
+          fontSize: 17,
+          fontWeight: '400',
+        },
+        style,
+      ]}
+    >
+      {text}
+    </Text>
+  </Touchable>
+);
