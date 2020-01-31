@@ -101,7 +101,7 @@ export default class QuickPicker extends React.Component {
       return null;
     }
 
-    if (Platform.OS === 'android' || true) {
+    if (Platform.OS === 'android') {
       return (
         <AndroidPicker
           date={pickerOptions.date || new Date()}
