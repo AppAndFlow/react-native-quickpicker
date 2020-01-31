@@ -146,3 +146,41 @@ Opens the picker.
 `Static QuickPicker.close()`
 
 Closes the picker.
+
+#### PickerOptions
+
+| **field** | **type** | **defaultValue** | **Platform** | **description** |
+| --- | --- | --- | --- | --- |
+| item | Item | undefined | Both | Picker's selected item |
+| items | Item[] | [] | Both | Picker's items |
+| onChange | (Item \| Date) => void | undefined | Both | Callback function when an item is selected |
+| onPressDone | (Item \| Date) => void | undefined | Both | Callback function when Done/Ok button is pressed |
+| onTapOut | () => void | undefined | Both | Callback function when Cancel button is pressed or when user taps Out |
+| disableTopRow | boolean | false | iOS | Disable the picker top bar |
+| topRow | ReactNode | undefined | iOS | If you want to create your own custom top bar |
+| doneButtonText | string | "Done" (iOS) "Ok" (Android) | Both | Done button text |
+| cancelButtonText | string | "Cancel" | Android | Cancel button text |
+| doneButtonTextStyle | TextStyle | undefined | Both | Done (and Cancel on Android) button text style |
+| androidModalStyle | ViewStyle | undefined | Android | Android's modal view style |
+| androidItemStyle | ViewStyle | undefined | Android | Android's modal items style |
+| androidItemTextStyle | TextStyle | undefined | Android | Android's modal items text style |
+| androidSelectedItemStyle | TextStyle | undefined | Android | Android's modal selected item text style |
+| pickerType           | "normal" \| "time"        | "normal"        | Both           | sets the picker to his normal mode or to time mode|
+| mode           | "date" \| "time" \| "datetime" \| "countdown"         | undefined        | Both           | mode if pickerType is set to "time"|
+| display           | "default" \| "spinner" \| "calendar" \| "clock"         | undefined        | Android          |Defines the visual display of the picker for Android |
+| date | Date | new Date() | both | Current selected date |
+| maximumDate | Date |  undefined | both | Maximum date |
+| minimumDate | Date |  undefined | both | Minimum date |
+| timeZoneOffsetInMinutes | number |  undefined | iOS | Allows changing of the timeZone of the date picker. By default it uses the device's time zone.|
+| locale | string |  undefined | iOS | Allows changing of the locale of the component. By default it uses the device's locale. |
+| is24Hour | boolean |  undefined | Android | Allows changing of the time picker to a 24 hour format. |
+| minuteInterval | 1 \| 2 \| 6 \| 5 \| 4 \| 3 \| 10 \| 12 \| 15 \| 20 \| 30 |  undefined | iOS | The interval at which minutes can be selected. |
+| useNativeDriver | boolean |  true | both | Use native driver |
+
+#### Item
+
+| **field** | **type** | **description** |
+| --- | --- | --- |
+| value | string or number | item's value |
+| label | string | item's label |
+
