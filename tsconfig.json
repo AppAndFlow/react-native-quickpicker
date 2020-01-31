@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "lib": ["dom", "es2015", "es2016"],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es5"
+  }
+}

@@ -1,21 +1,21 @@
 {
   "expo": {
-    "name": "quick-picker",
-    "description": "An empty new project",
-    "slug": "quick-picker",
-    "privacy": "public",
-    "sdkVersion": "33.0.0",
-    "version": "1.0.0",
+    "name": "react-native-quickpicker",
+    "description": "A plug and Play picker for React Native",
+    "slug": "react-native-quickpicker",
+    "privacy": "unlisted",
+    "sdkVersion": "36.0.0",
+    "platforms": ["ios", "android"],
+    "version": "0.0.1",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
     "icon": "./assets/icons/app-icon.png",
-    "loading": {
-      "icon": "./assets/icons/loading-icon.png",
-      "hideExponentText": false
+    "splash": {
+      "backgroundColor": "#f2f2f2"
     },
-    "packagerOpts": {
-      "assetExts": ["ttf", "mp4"]
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     }
