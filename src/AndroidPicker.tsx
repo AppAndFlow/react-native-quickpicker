@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { View, Animated, Platform, Text, Picker } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import Touchable from '@appandflow/touchable';
-import pickerStore, { ANIMATION_DURATION } from './PickerStore';
+import pickerStore, { ANIMATION_DURATION, Item } from './PickerStore';
 
 const HEIGHT = 250;
 
@@ -13,25 +14,25 @@ const TOP_BACKGROUND_COLOR = '#F1F1F1';
 const BACKGROUND_COLOR = '#E2E2E2';
 
 interface P {
-  onPressDone: () => void;
+  onPressDone: (item: Item | Date) => void;
   onChange: any;
   getRef: (androidPicker: AndroidPicker) => void;
+  date: Date;
 }
 
 export default class AndroidPicker extends React.Component<P> {
   state = {
-    isOpen: false,
+    isOpen: true,
     deltaY: new Animated.Value(0),
+    date: new Date(),
   };
 
   componentDidMount() {
     this.props.getRef(this);
+    this.setState({ date: this.props.date });
   }
 
   _animateOpen = () => {
-    if (Platform.OS !== 'android') {
-      return null;
-    }
     Animated.timing(this.state.deltaY, {
       toValue: -HEIGHT,
       duration: ANIMATION_DURATION,
@@ -40,9 +41,6 @@ export default class AndroidPicker extends React.Component<P> {
   };
 
   _animateClose = () => {
-    if (Platform.OS !== 'android') {
-      return null;
-    }
     Animated.timing(this.state.deltaY, {
       toValue: 0,
       duration: ANIMATION_DURATION,
@@ -50,62 +48,32 @@ export default class AndroidPicker extends React.Component<P> {
     }).start();
   };
 
-  _renderPickerBasedOnType = () => {
-    const { pickerOptions } = pickerStore;
-
-    const items = pickerOptions.items ? pickerOptions.items : [];
-
-    return (
-      <View
-        style={[
-          { backgroundColor: BACKGROUND_COLOR, height: HEIGHT - BORDERHEIGHT },
-          pickerOptions.disableTopRow ? { height: HEIGHT } : {},
-        ]}
-      >
-        {pickerOptions.pickerType === 'normal' ? (
-          <Picker
-            selectedValue={pickerOptions.item?.value}
-            onValueChange={(_, itemIndex) =>
-              // @ts-ignore
-              this.props.onChange(items[itemIndex])
-            }
-            // @ts-ignore
-            pickerStyleType={pickerOptions.pickerStyleType}
-            itemStyle={pickerOptions.itemStyle}
-          >
-            {items.map((item, index) => (
-              <Picker.Item
-                key={`${item.value}-${index}-pickeritem`}
-                label={item.label}
-                value={item.value}
-              />
-            ))}
-          </Picker>
-        ) : (
-          <DateTimePicker
-            value={pickerOptions.date || new Date()}
-            // @ts-ignore
-            mode={pickerOptions.mode || 'time'}
-            onChange={(_, date) => this.props.onChange(date)}
-            maximumDate={pickerOptions.maximumDate}
-            minimumDate={pickerOptions.minimumDate}
-            timeZoneOffsetInMinutes={pickerOptions.timeZoneOffsetInMinutes}
-            locale={pickerOptions.locale}
-            is24Hour={pickerOptions.is24Hour}
-            minuteInterval={pickerOptions.minuteInterval}
-          />
-        )}
-      </View>
-    );
-  };
-
   render() {
     const { pickerOptions } = pickerStore;
-    if (Platform.OS !== 'android') {
+
+    const doneButtonText = pickerOptions.doneButtonText || 'Done';
+
+    if (!this.state.isOpen) {
       return null;
     }
 
-    const doneButtonText = pickerOptions.doneButtonText || 'Done';
+    return pickerOptions.pickerType === 'normal' ? null : (
+      <DateTimePicker
+        value={this.state.date}
+        // @ts-ignore
+        mode={pickerOptions.mode || 'time'}
+        onChange={(_, date) => {
+          this.setState({ isOpen: false }, () => this.props.onChange(date));
+        }}
+        maximumDate={pickerOptions.maximumDate}
+        minimumDate={pickerOptions.minimumDate}
+        timeZoneOffsetInMinutes={pickerOptions.timeZoneOffsetInMinutes}
+        locale={pickerOptions.locale}
+        // @ts-ignore
+        is24Hour={pickerOptions.is24Hour}
+        minuteInterval={pickerOptions.minuteInterval}
+      />
+    );
 
     return (
       <Animated.View

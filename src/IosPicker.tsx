@@ -91,6 +91,7 @@ export default class IosPicker extends React.Component<P> {
             minimumDate={pickerOptions.minimumDate}
             timeZoneOffsetInMinutes={pickerOptions.timeZoneOffsetInMinutes}
             locale={pickerOptions.locale}
+            // @ts-ignore
             is24Hour={pickerOptions.is24Hour}
             minuteInterval={pickerOptions.minuteInterval}
           />

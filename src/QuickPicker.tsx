@@ -33,7 +33,6 @@ export default class QuickPicker extends React.Component {
     this.setState({ isOpen: true }, () => {
       this._animateOpen();
       this._iosPicker?._animateOpen();
-      this._androidPicker?._animateOpen();
     });
   };
 
@@ -45,6 +44,12 @@ export default class QuickPicker extends React.Component {
   };
 
   _animateOpen = () => {
+    if (
+      Platform.OS === 'android' &&
+      pickerStore.pickerOptions.pickerType !== 'normal'
+    ) {
+      return;
+    }
     Animated.timing(this.state.opacity, {
       toValue: 0.4,
       duration: ANIMATION_DURATION,
@@ -64,6 +69,8 @@ export default class QuickPicker extends React.Component {
     const { pickerOptions } = pickerStore;
     if (pickerOptions.onPressDone && pickerOptions.item) {
       pickerOptions.onPressDone(pickerOptions.item);
+    } else if (pickerOptions.onPressDone && pickerOptions.date) {
+      pickerOptions.onPressDone(pickerOptions.date);
     }
     QuickPicker.close();
   };
@@ -72,11 +79,16 @@ export default class QuickPicker extends React.Component {
     const { pickerOptions } = pickerStore;
     if (pickerOptions.onChange && item) {
       pickerOptions.onChange(item);
+
       if (item.label) {
         pickerOptions.item = item;
       } else {
         pickerOptions.date = item;
       }
+    }
+
+    if (Platform.OS === 'android') {
+      QuickPicker.close();
     }
   };
 
@@ -86,6 +98,17 @@ export default class QuickPicker extends React.Component {
 
     if (!isOpen) {
       return null;
+    }
+
+    if (Platform.OS === 'android') {
+      return (
+        <AndroidPicker
+          date={pickerOptions.date || new Date()}
+          onPressDone={this._onPressDone}
+          getRef={_androidPicker => (this._androidPicker = _androidPicker)}
+          onChange={this._onChange}
+        />
+      );
     }
 
     return (
@@ -115,11 +138,6 @@ export default class QuickPicker extends React.Component {
         <IosPicker
           onPressDone={this._onPressDone}
           getRef={iosPicker => (this._iosPicker = iosPicker)}
-          onChange={this._onChange}
-        />
-        <AndroidPicker
-          onPressDone={this._onPressDone}
-          getRef={_androidPicker => (this._androidPicker = _androidPicker)}
           onChange={this._onChange}
         />
       </View>

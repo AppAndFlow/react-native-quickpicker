@@ -1,5 +1,5 @@
 import QuickPicker from './QuickPicker';
-import { TextStyle, StyleProp } from 'react-native';
+import { TextStyle, StyleProp, Platform } from 'react-native';
 
 export interface PickerStore {
   isOpen: boolean;
@@ -37,8 +37,6 @@ export interface PickerOptions {
   locale?: string;
   is24Hour?: boolean;
   minuteInterval?: 1 | 2 | 6 | 5 | 4 | 3 | 10 | 12 | 15 | 20 | 30;
-
-  useAndroidLayout?: boolean;
 }
 
 const initialPickerOptions: PickerOptions = {
@@ -54,7 +52,15 @@ const initialPickerOptions: PickerOptions = {
   pickerStyleType: undefined,
   itemStyle: undefined,
 
-  useAndroidLayout: false,
+  date: undefined,
+  mode: undefined,
+  display: undefined,
+  maximumDate: undefined,
+  minimumDate: undefined,
+  timeZoneOffsetInMinutes: undefined,
+  locale: undefined,
+  is24Hour: undefined,
+  minuteInterval: undefined,
 };
 
 const pickerStore: PickerStore = {
@@ -77,4 +83,4 @@ const pickerStore: PickerStore = {
 
 export default pickerStore;
 
-export const ANIMATION_DURATION = 250;
+export const ANIMATION_DURATION = Platform.OS === 'ios' ? 250 : 1;
