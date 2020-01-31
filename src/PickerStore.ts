@@ -24,6 +24,7 @@ export interface PickerOptions {
   doneButtonText?: string;
   disableTopRow?: boolean;
   topRow?: React.ReactNode;
+
   pickerType?: 'normal' | 'time';
   pickerStyleType?: any;
   itemStyle?: StyleProp<TextStyle>;
