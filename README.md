@@ -94,7 +94,7 @@ export default class AnotherRandomComponent extends React.Component {
 
 ## API
 
-#### Methodes
+#### Methods
 
 `Static QuickPicker.open(pickerOptions)`
 
