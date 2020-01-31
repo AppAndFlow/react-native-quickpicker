@@ -15,7 +15,6 @@ export default class App extends React.Component {
   _onPressText = () => {
     QuickPicker.open({
       onChange: item => this.setState({ item }),
-
       item: this.state.item,
     });
   };
@@ -28,11 +27,8 @@ export default class App extends React.Component {
           native={false}
           onPress={this._onPressText}
         >
-          <Text>
-            Open up picker, selected letter:{' '}
-            {this.state.selectedDate.toLocaleTimeString()}
-          </Text>
-          <Text>Open up picker, selected letter: {this.state.item.label}</Text>
+          <Text>Open up picker, {this.state.item.value}</Text>
+          <Text>Open up picker, {this.state.item.label}</Text>
         </Touchable>
         <QuickPicker />
       </View>
