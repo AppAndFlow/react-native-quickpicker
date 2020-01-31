@@ -23,6 +23,7 @@ export default class App extends React.Component {
       // date: this.state.selectedDate,
 
       item: this.state.item,
+
       // androidModalStyle: { backgroundColor: 'red' },
       androidItemStyle: { backgroundColor: 'red' },
       androidModalStyle: { height: 600 },

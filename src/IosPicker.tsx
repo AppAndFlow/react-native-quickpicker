@@ -22,6 +22,11 @@ export default class IosPicker extends React.Component<P> {
   state = {
     isOpen: false,
     deltaY: new Animated.Value(0),
+    value: pickerStore.pickerOptions.item
+      ? pickerStore.pickerOptions.item.value
+      : pickerStore.pickerOptions.items
+      ? pickerStore.pickerOptions.items[0]
+      : undefined,
   };
 
   componentDidMount() {
@@ -64,11 +69,17 @@ export default class IosPicker extends React.Component<P> {
       >
         {pickerOptions.pickerType === 'normal' ? (
           <Picker
-            selectedValue={pickerOptions.item?.value}
-            onValueChange={(_, itemIndex) =>
-              // @ts-ignore
-              this.props.onChange(items[itemIndex])
+            selectedValue={
+              pickerOptions.item ? pickerOptions.item?.value : this.state.value
             }
+            onValueChange={(_, itemIndex) => {
+              // @ts-ignore
+              this.props.onChange(items[itemIndex]);
+
+              if (!pickerOptions.item) {
+                this.setState({ value: items[itemIndex].value });
+              }
+            }}
             // @ts-ignore
             pickerStyleType={pickerOptions.pickerStyleType}
             itemStyle={pickerOptions.itemStyle}
