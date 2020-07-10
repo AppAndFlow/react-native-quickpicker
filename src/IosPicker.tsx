@@ -79,6 +79,7 @@ export default class IosPicker extends React.Component<P> {
               if (!pickerOptions.item) {
                 this.setState({ value: items[itemIndex].value });
               }
+              this.forceUpdate();
             }}
             // @ts-ignore
             pickerStyleType={pickerOptions.pickerStyleType}
