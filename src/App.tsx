@@ -14,8 +14,21 @@ export default class App extends React.Component {
 
   _onPressText = () => {
     QuickPicker.open({
+      mode: 'datetime',
+      pickerType: 'time',
+      date: new Date(),
       onChange: item => this.setState({ item }),
-      item: this.state.item,
+      // item: this.state.item,
+      // items: [
+      //   {
+      //     value: '1',
+      //     label: 'salut',
+      //   },
+      //   {
+      //     value: '2',
+      //     label: 'salut2',
+      //   },
+      // ],
     });
   };
 

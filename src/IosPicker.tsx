@@ -40,7 +40,7 @@ export default class IosPicker extends React.Component<P> {
     Animated.timing(this.state.deltaY, {
       toValue: -HEIGHT,
       duration: ANIMATION_DURATION,
-      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver || false,
     }).start();
   };
 
@@ -51,7 +51,7 @@ export default class IosPicker extends React.Component<P> {
     Animated.timing(this.state.deltaY, {
       toValue: 0,
       duration: ANIMATION_DURATION,
-      useNativeDriver: pickerStore.pickerOptions.useNativeDriver,
+      useNativeDriver: pickerStore.pickerOptions.useNativeDriver || false,
     }).start();
   };
 
@@ -107,6 +107,7 @@ export default class IosPicker extends React.Component<P> {
             // @ts-ignore
             is24Hour={pickerOptions.is24Hour}
             minuteInterval={pickerOptions.minuteInterval}
+            display={Platform.OS === 'ios' ? 'spinner' : undefined}
           />
         )}
       </View>
