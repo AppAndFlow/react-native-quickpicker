@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Animated, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Animated, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import Touchable from '@appandflow/touchable';
 import pickerStore, { ANIMATION_DURATION, Item } from './PickerStore';
 
 const ANDROID_SECONDARY_VARIANT = '#018786';
@@ -76,9 +75,7 @@ export default class AndroidPicker extends React.Component<P> {
           ...StyleSheet.absoluteFillObject,
         }}
       >
-        <Touchable
-          feedback="none"
-          native={false}
+        <TouchableOpacity
           style={{
             flex: 1,
             position: 'absolute',
@@ -95,7 +92,7 @@ export default class AndroidPicker extends React.Component<P> {
               },
             ]}
           />
-        </Touchable>
+        </TouchableOpacity>
         <Animated.View
           style={[
             {
@@ -182,9 +179,7 @@ const AndroidButtonText = ({
   style?: any;
   containerStyle?: any;
 }) => (
-  <Touchable
-    feedback="opacity"
-    native={false}
+  <TouchableOpacity
     onPress={onPress}
     hitslop={{ top: 20, left: 20, right: 20, bottom: 20 }}
     style={containerStyle}
@@ -201,7 +196,7 @@ const AndroidButtonText = ({
     >
       {text}
     </Text>
-  </Touchable>
+  </TouchableOpacity>
 );
 
 const RowItem = ({
