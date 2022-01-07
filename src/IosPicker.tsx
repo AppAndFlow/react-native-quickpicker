@@ -107,6 +107,7 @@ export default class IosPicker extends React.Component<P> {
             // @ts-ignore
             is24Hour={pickerOptions.is24Hour}
             minuteInterval={pickerOptions.minuteInterval}
+            themeVariant="light"
             display={Platform.OS === 'ios' ? 'spinner' : undefined}
           />
         )}
